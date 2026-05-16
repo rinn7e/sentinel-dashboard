@@ -19,6 +19,11 @@
         align-items: center;
         justify-content: center;
         background-color: white;
+        transition: background-color 0.2s ease;
+      }
+      /* Dark mode styles for the initial loader */
+      .dark .initial-loader-wrap {
+        background-color: #000000;
       }
       .initial-loader {
         width: 40px;
@@ -27,6 +32,11 @@
         border-top: 4px solid #3b82f6;
         border-radius: 50%;
         animation: initial-spin 1s linear infinite;
+      }
+      /* Adjust loader ring color for dark mode */
+      .dark .initial-loader {
+        border: 4px solid #1e293b;
+        border-top: 4px solid #3b82f6;
       }
       @keyframes initial-spin {
         0% {
@@ -37,8 +47,23 @@
         }
       }
     </style>
+    <script>
+      /**
+       * Immediately apply dark mode class before the app boots to prevent white flash.
+       * Uses the same key as the TEA application for consistency.
+       */
+      (function() {
+        try {
+          var scheme = localStorage.getItem('admin-color-scheme') || 'auto';
+          var isDark = scheme === 'dark' || (scheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="overflow-y-scroll">
+  <body class="overflow-y-scroll bg-gray-50 dark:bg-black">
     <div id="root">
       <div class="initial-loader-wrap">
         <div class="initial-loader"></div>

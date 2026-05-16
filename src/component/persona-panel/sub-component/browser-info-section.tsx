@@ -1,6 +1,10 @@
 import React from 'react'
+import { type ColorScheme } from '@/theme/util'
 
-export const BrowserInfoSection: React.FC = () => {
+export const BrowserInfoSection: React.FC<{
+  themeName: string
+  colorScheme: ColorScheme
+}> = ({ themeName, colorScheme }) => {
   const [info, setInfo] = React.useState({
     browser: 'Loading...',
     os: 'Loading...',
@@ -33,22 +37,30 @@ export const BrowserInfoSection: React.FC = () => {
   }, [])
 
   return (
-    <div className='mb-[24px] grid grid-cols-2 gap-[8px] border border-indigo-500/10 rounded-[8px] bg-slate-900/30 p-[12px]'>
+    <div className='mb-[24px] grid grid-cols-2 gap-[8px] border border-theme-primary/10 rounded-[8px] bg-theme-secondary/30 p-[12px]'>
       <div className='flex flex-col'>
-        <span className='text-[9px] text-indigo-500 uppercase font-black tracking-widest'>Browser</span>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Browser</span>
         <span className='text-[11px] text-white font-mono'>{info.browser}</span>
       </div>
       <div className='flex flex-col'>
-        <span className='text-[9px] text-indigo-500 uppercase font-black tracking-widest'>Operating System</span>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Operating System</span>
         <span className='text-[11px] text-white font-mono'>{info.os}</span>
       </div>
       <div className='flex flex-col mt-[4px]'>
-        <span className='text-[9px] text-indigo-500 uppercase font-black tracking-widest'>Resolution</span>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Resolution</span>
         <span className='text-[11px] text-white font-mono'>{info.resolution}</span>
       </div>
       <div className='flex flex-col mt-[4px]'>
-        <span className='text-[9px] text-indigo-500 uppercase font-black tracking-widest'>Status</span>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Status</span>
         <span className='text-[11px] text-green-400 font-mono'>Connected</span>
+      </div>
+      <div className='flex flex-col mt-[4px]'>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Theme</span>
+        <span className='text-[11px] text-white font-mono'>{themeName}</span>
+      </div>
+      <div className='flex flex-col mt-[4px] col-span-2'>
+        <span className='text-[9px] text-theme-primary uppercase font-black tracking-widest'>Color Scheme</span>
+        <span className='text-[11px] text-white font-mono'>{colorScheme}</span>
       </div>
     </div>
   )

@@ -9,6 +9,7 @@ import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
 import * as Persona from '@/component/persona-panel/type'
 import { type Theme } from './theme/type'
+import { type ColorScheme } from './theme/util'
 
 export type User = {
   username: string
@@ -28,6 +29,7 @@ export type Model = {
   persona: Persona.Model
   showScrollTop: boolean
   theme: Theme
+  colorScheme: ColorScheme
 }
 
 export type PageModel =
@@ -37,6 +39,7 @@ export type PageModel =
   | { _tag: 'UsersPageModel'; model: Users.Model }
   | { _tag: 'CommentsPageModel'; model: Comments.Model }
   | { _tag: 'VisitorsPageModel'; model: Visitors.Model }
+  | { _tag: 'SettingsPageModel' }
   | { _tag: 'NotFoundPageModel' }
 
 export type Msg =
@@ -52,4 +55,5 @@ export type Msg =
   | { _tag: 'SetShowScrollTop'; value: boolean }
   | { _tag: 'ScrollToTop' }
   | { _tag: 'SwitchTheme'; theme: Theme }
+  | { _tag: 'SetColorScheme'; scheme: ColorScheme }
   | { _tag: 'NoOp' }

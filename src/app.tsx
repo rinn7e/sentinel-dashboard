@@ -1,13 +1,14 @@
 import React from 'react'
 import { type Dispatcher } from 'tea-cup-fp'
 
-import { articlesPage, commentsPage, homePage, usersPage, visitorsPage } from '@/common/type/route'
+import { articlesPage, commentsPage, homePage, settingsPage, usersPage, visitorsPage } from '@/common/type/route'
 import { ArticlesMemo } from '@/page/articles/component'
 import { CommentsMemo } from '@/page/comments/component'
 import { HomeMemo } from '@/page/home/component'
 import { LoginMemo } from '@/page/login/component'
 import { UsersMemo } from '@/page/users/component'
 import { VisitorsMemo } from '@/page/visitors/component'
+import { SettingsComponent } from '@/page/settings/component'
 import { PersonaPanel } from '@/component/persona-panel/persona-panel'
 
 import { type Model, type Msg } from './type'
@@ -22,11 +23,12 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
   // If we are on the login page, show a different layout (no sidebar)
   if (model.route.page._tag === 'LoginPage') {
     return (
-      <main className='h-dvh bg-gray-50'>
+      <main className='h-dvh bg-gray-50 dark:bg-black'>
         {renderPage(model, dispatch)}
         <PersonaPanel 
           model={model.persona} 
           theme={model.theme}
+          colorScheme={model.colorScheme}
           dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
           onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
         />
@@ -35,9 +37,9 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
   }
 
   return (
-    <div className='flex h-dvh flex-col bg-gray-50 lg:flex-row overflow-hidden'>
+    <div className='flex h-dvh flex-col bg-gray-50 dark:bg-black lg:flex-row overflow-hidden'>
       {/* Sidebar */}
-      <aside className='w-full bg-theme-secondary text-white lg:w-[260px] lg:shrink-0'>
+      <aside className='w-full bg-theme-secondary text-white lg:w-[260px] lg:shrink-0 flex flex-col'>
         <div className='p-[24px]'>
           <h1 className='text-[22px] font-bold tracking-tight'>Admin Panel</h1>
           <p className='text-[12px] text-white/40'>RealWorld Dashboard</p>
@@ -95,7 +97,20 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
             active={model.route.page._tag === 'VisitorsPage'}
             onClick={() => dispatch({ _tag: 'Navigate', route: { page: visitorsPage() } })}
           />
+          <SidebarLink
+            label='Settings'
+            icon={
+              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z' />
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
+              </svg>
+            }
+            active={model.route.page._tag === 'SettingsPage'}
+            onClick={() => dispatch({ _tag: 'Navigate', route: { page: settingsPage() } })}
+          />
         </nav>
+
+
       </aside>
 
       {/* Main Content */}
@@ -128,6 +143,7 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
       <PersonaPanel 
         model={model.persona} 
         theme={model.theme}
+        colorScheme={model.colorScheme}
         dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
         onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
       />
@@ -196,6 +212,14 @@ const renderPage = (model: Model, dispatch: Dispatcher<Msg>) => {
         <LoginMemo
           model={model.pageModel.model}
           dispatch={(subMsg) => dispatch({ _tag: 'LoginPageMsg', subMsg })}
+        />
+      )
+    case 'SettingsPageModel':
+      return (
+        <SettingsComponent
+          colorScheme={model.colorScheme}
+          theme={model.theme}
+          dispatch={dispatch}
         />
       )
     case 'NotFoundPageModel':

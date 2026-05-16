@@ -11,8 +11,8 @@ import * as Login from '@/page/login'
 import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
 import * as Persona from '@/component/persona-panel/update'
-import { defaultTheme } from './theme/data'
-import { injectTheme } from './theme/util'
+import { defaultTheme, themes } from './theme/data'
+import { injectTheme, loadColorScheme, saveColorScheme, loadThemeId, saveTheme } from './theme/util'
 
 import { type Model, type Msg, type PageModel } from './type'
 
@@ -42,6 +42,8 @@ export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
       const [m, c] = Visitors.init()
       return [{ _tag: 'VisitorsPageModel', model: m }, c.map((subMsg): Msg => ({ _tag: 'VisitorsPageMsg', subMsg }))]
     }
+    case 'SettingsPage':
+      return [{ _tag: 'SettingsPageModel' }, Cmd.none()]
     case 'NotFoundPage':
     default:
       return [{ _tag: 'NotFoundPageModel' }, Cmd.none()]
@@ -52,6 +54,9 @@ export const preInit = (location: Location): [Model, Cmd<Msg>] => {
   const route = parseAppRoute(window.location.origin, location.href)
   const [pageModel, pageCmd] = initPageModel(route)
   const [personaModel, personaCmd] = Persona.init()
+  const colorScheme = loadColorScheme()
+  const savedThemeId = loadThemeId()
+  const theme = (savedThemeId ? themes[savedThemeId] : null) ?? defaultTheme
   const model: Model = {
     route,
     shared: {
@@ -60,15 +65,16 @@ export const preInit = (location: Location): [Model, Cmd<Msg>] => {
     pageModel,
     persona: personaModel,
     showScrollTop: false,
-    theme: defaultTheme,
+    theme,
+    colorScheme,
   }
-  
+
   return [model, Cmd.batch([
     pageCmd,
     personaCmd.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg })),
-    // Initial theme injection
+    // Initial theme injection using persisted color scheme
     Task.perform(Task.succeed(undefined).andThen(() => {
-      injectTheme(defaultTheme)
+      injectTheme(theme, colorScheme)
       return Task.succeed(undefined)
     }), () => ({ _tag: 'NoOp' } as Msg))
   ])]
@@ -149,7 +155,18 @@ export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
       return [
         { ...model, theme: msg.theme },
         Task.perform(Task.succeed(undefined).andThen(() => {
-          injectTheme(msg.theme)
+          saveTheme(msg.theme)
+          injectTheme(msg.theme, model.colorScheme)
+          return Task.succeed(undefined)
+        }), () => ({ _tag: 'NoOp' } as Msg))
+      ]
+    }
+    case 'SetColorScheme': {
+      return [
+        { ...model, colorScheme: msg.scheme },
+        Task.perform(Task.succeed(undefined).andThen(() => {
+          saveColorScheme(msg.scheme)
+          injectTheme(model.theme, msg.scheme)
           return Task.succeed(undefined)
         }), () => ({ _tag: 'NoOp' } as Msg))
       ]

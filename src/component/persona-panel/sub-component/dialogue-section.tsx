@@ -6,13 +6,13 @@ export const DialogueSection: React.FC<{
   dialogue: string
   onToggleDetails: () => void
 }> = ({ showDetails, bio, dialogue, onToggleDetails }) => (
-  <div className='mb-[24px] text-[13px] leading-relaxed text-indigo-100 font-medium italic'>
+  <div className='mb-[24px] text-[13px] leading-relaxed text-white/90 font-medium italic'>
     {showDetails ? (
       <div className='space-y-[12px]'>
         <p>"{bio}"</p>
         <button 
           onClick={onToggleDetails}
-          className='text-[10px] font-bold text-indigo-500 uppercase hover:text-indigo-300'
+          className='text-[10px] font-bold text-theme-primary uppercase hover:text-theme-primary/70'
         >
           Back
         </button>

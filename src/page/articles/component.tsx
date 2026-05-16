@@ -18,7 +18,7 @@ export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
   return (
     <div className='relative flex flex-col gap-[32px]'>
       <div className='flex flex-col gap-[24px]'>
-        <h2 className='text-[28px] font-bold text-slate-800'>Articles</h2>
+        <h2 className='text-[28px] font-bold text-theme-secondary dark:text-white'>Articles</h2>
         <SearchBar
           searchText={model.searchText}
           sort={model.sort}
@@ -29,9 +29,9 @@ export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
         />
       </div>
 
-      <div className='overflow-x-auto rounded-[12px] bg-white shadow-sm'>
+      <div className='overflow-x-auto rounded-[12px] bg-white dark:bg-surface-dark shadow-sm'>
         <table className='w-full text-left'>
-          <thead className='bg-slate-50 text-[12px] font-semibold uppercase tracking-wider text-slate-500'>
+          <thead className='bg-slate-50 dark:bg-black/20 text-[12px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-200'>
             <tr>
               <th className='px-[24px] py-[16px]'>ID</th>
               <th className='px-[24px] py-[16px]'>Slug</th>
@@ -41,23 +41,23 @@ export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
               <th className='px-[24px] py-[16px]'>Created At</th>
             </tr>
           </thead>
-          <tbody className='divide-y divide-slate-100 text-[14px]'>
+          <tbody className='divide-y divide-slate-100 dark:divide-white/20 text-[14px]'>
             {model.articles.map((a) => (
               <tr 
                 key={a.id} 
-                className='cursor-pointer hover:bg-slate-50 transition-colors'
+                className='cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors'
                 onClick={() => dispatch({ _tag: 'SelectArticle', article: O.some(a) })}
               >
-                <td className='px-[24px] py-[16px] font-mono text-slate-400'>{a.id}</td>
-                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-500'>{a.slug}</td>
-                <td className='px-[24px] py-[16px] font-medium text-slate-800'>{a.title}</td>
-                <td className='px-[24px] py-[16px] text-slate-600'>{a.author.username}</td>
+                <td className='px-[24px] py-[16px] font-mono text-slate-400 dark:text-slate-200'>{a.id}</td>
+                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-500 dark:text-slate-200'>{a.slug}</td>
+                <td className='px-[24px] py-[16px] font-medium text-theme-secondary dark:text-white'>{a.title}</td>
+                <td className='px-[24px] py-[16px] text-slate-600 dark:text-slate-200'>{a.author.username}</td>
                 <td className='px-[24px] py-[16px] text-center'>
-                  <span className='rounded-full bg-slate-50 px-[10px] py-[4px] text-[12px] font-bold text-slate-500'>
+                  <span className='rounded-full bg-slate-50 dark:bg-white/10 px-[10px] py-[4px] text-[12px] font-bold text-slate-500 dark:text-slate-200'>
                     {a.favoritesCount}
                   </span>
                 </td>
-                <td className='px-[24px] py-[16px] text-slate-400'>{new Date(a.createdAt).toLocaleDateString()}</td>
+                <td className='px-[24px] py-[16px] text-slate-400 dark:text-slate-200'>{new Date(a.createdAt).toLocaleDateString()}</td>
               </tr>
             ))}
           </tbody>

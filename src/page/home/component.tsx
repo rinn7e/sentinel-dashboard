@@ -22,7 +22,7 @@ export const HomeComponent: React.FC<Props> = ({ model, dispatch }) => {
   return (
     <div className='relative flex flex-col gap-[32px]'>
       <div>
-        <h2 className='mb-[24px] text-[28px] font-bold text-slate-800'>Overview</h2>
+        <h2 className='mb-[24px] text-[28px] font-bold text-theme-secondary dark:text-white'>Overview</h2>
         <div className='grid grid-cols-1 gap-[24px] md:grid-cols-3'>
           <StatCard label='Total Articles' value={model.articleCount.toString()} color='bg-blue-500' />
           <StatCard label='Active Users' value={model.userCount.toString()} color='bg-green-500' />
@@ -30,10 +30,10 @@ export const HomeComponent: React.FC<Props> = ({ model, dispatch }) => {
         </div>
       </div>
 
-      <div className='rounded-[16px] bg-white p-[24px] shadow-sm'>
+      <div className='rounded-[16px] bg-white dark:bg-surface-dark p-[24px] shadow-sm'>
         <div className='mb-[24px] flex flex-col justify-between gap-[16px] sm:flex-row sm:items-center'>
-          <h3 className='text-[18px] font-bold text-slate-800'>Visitor Activity</h3>
-          <div className='flex flex-wrap gap-[8px] rounded-[8px] bg-slate-100 p-[4px]'>
+          <h3 className='text-[18px] font-bold text-theme-secondary dark:text-white'>Visitor Activity</h3>
+          <div className='flex flex-wrap gap-[8px] rounded-[8px] bg-slate-100 dark:bg-black/20 p-[4px]'>
             <FilterButton
               label='24h'
               active={model.currentFilter === '24h'}
@@ -71,13 +71,13 @@ export const HomeComponent: React.FC<Props> = ({ model, dispatch }) => {
                 dataKey='name'
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#64748b', fontSize: 12 }}
+                tick={{ fill: 'var(--color-chart-tick)', fontSize: 12 }}
                 dy={10}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: '#64748b', fontSize: 12 }}
+                tick={{ fill: 'var(--color-chart-tick)', fontSize: 12 }}
               />
               <Tooltip
                 contentStyle={{
@@ -99,11 +99,11 @@ export const HomeComponent: React.FC<Props> = ({ model, dispatch }) => {
         </div>
       </div>
 
-      <div className='rounded-[16px] bg-white p-[24px] shadow-sm'>
-        <h3 className='mb-[24px] text-[18px] font-bold text-slate-800'>System Logs</h3>
-        <div className='overflow-hidden rounded-[8px] border border-slate-100'>
+      <div className='rounded-[16px] bg-white dark:bg-surface-dark p-[24px] shadow-sm'>
+        <h3 className='mb-[24px] text-[18px] font-bold text-theme-secondary dark:text-white'>System Logs</h3>
+        <div className='overflow-hidden rounded-[8px] border border-slate-100 dark:border-white/20'>
           <table className='w-full text-left'>
-            <thead className='bg-slate-50 text-[12px] font-semibold uppercase tracking-wider text-slate-500'>
+            <thead className='bg-slate-50 dark:bg-black/20 text-[12px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-200'>
               <tr>
                 <th className='px-[16px] py-[12px]'>Level</th>
                 <th className='px-[16px] py-[12px]'>Message</th>
@@ -111,21 +111,21 @@ export const HomeComponent: React.FC<Props> = ({ model, dispatch }) => {
                 <th className='px-[16px] py-[12px]'>Time</th>
               </tr>
             </thead>
-            <tbody className='divide-y divide-slate-50 text-[14px]'>
+            <tbody className='divide-y divide-slate-50 dark:divide-white/20 text-[14px]'>
               {model.errorLogs.map((log) => (
                 <tr 
                   key={log.id} 
-                  className='cursor-pointer hover:bg-slate-50 transition-colors'
+                  className='cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors'
                   onClick={() => dispatch({ _tag: 'SelectLog', log: O.some(log) })}
                 >
                   <td className='px-[16px] py-[12px]'>
                     <LevelBadge level={log.level} />
                   </td>
-                  <td className='px-[16px] py-[12px] font-medium text-slate-700'>
+                  <td className='px-[16px] py-[12px] font-medium text-slate-700 dark:text-slate-200'>
                     <div className='max-w-[500px] truncate font-mono text-[12px]'>{log.message}</div>
                   </td>
-                  <td className='px-[16px] py-[12px] font-mono text-[12px] text-slate-500'>{log.source}</td>
-                  <td className='px-[16px] py-[12px] text-slate-400'>{new Date(log.timestamp).toLocaleTimeString()}</td>
+                  <td className='px-[16px] py-[12px] font-mono text-[12px] text-slate-500 dark:text-slate-200'>{log.source}</td>
+                  <td className='px-[16px] py-[12px] text-slate-400 dark:text-slate-200'>{new Date(log.timestamp).toLocaleTimeString()}</td>
                 </tr>
               ))}
             </tbody>

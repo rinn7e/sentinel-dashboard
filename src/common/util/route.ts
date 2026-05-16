@@ -8,6 +8,7 @@ import {
   homePage,
   loginPage,
   notFoundPage,
+  settingsPage,
   usersPage,
   visitorsPage,
 } from '../type/route'
@@ -17,6 +18,7 @@ const loginMatch = lit('login').and(end)
 const articlesMatch = lit('articles').and(end)
 const usersMatch = lit('users').and(end)
 const commentsMatch = lit('comments').and(end)
+const settingsMatch = lit('settings').and(end)
 const visitorsMatch = lit('visitors').and(end)
 
 const appRouter = zero<AppPage>()
@@ -26,6 +28,7 @@ const appRouter = zero<AppPage>()
   .alt(usersMatch.parser.map(usersPage))
   .alt(commentsMatch.parser.map(commentsPage))
   .alt(visitorsMatch.parser.map(visitorsPage))
+  .alt(settingsMatch.parser.map(settingsPage))
 
 export const parseAppRoute = (origin: string, url: string): AppRoute => {
   const path = url.replace(origin, '')
@@ -48,6 +51,8 @@ export const toUrlString = (appRoute: AppRoute): string => {
       return format(commentsMatch.formatter, {})
     case 'VisitorsPage':
       return format(visitorsMatch.formatter, {})
+    case 'SettingsPage':
+      return format(settingsMatch.formatter, {})
     case 'NotFoundPage':
       return '/404'
     default:

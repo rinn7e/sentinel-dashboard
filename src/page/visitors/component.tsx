@@ -17,7 +17,7 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
   return (
     <div className='relative flex flex-col gap-[32px]'>
       <div className='flex flex-col gap-[24px]'>
-        <h2 className='text-[28px] font-bold text-slate-800'>Visitors</h2>
+        <h2 className='text-[28px] font-bold text-theme-secondary dark:text-white'>Visitors</h2>
         <SearchBar
           searchText={model.searchText}
           sort={model.sort}
@@ -28,9 +28,9 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
         />
       </div>
 
-      <div className='overflow-x-auto rounded-[12px] bg-white shadow-sm'>
+      <div className='overflow-x-auto rounded-[12px] bg-white dark:bg-surface-dark shadow-sm'>
         <table className='w-full text-left'>
-          <thead className='bg-slate-50 text-[12px] font-semibold uppercase tracking-wider text-slate-500'>
+          <thead className='bg-slate-50 dark:bg-black/20 text-[12px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-200'>
             <tr>
               <th className='px-[24px] py-[16px]'>ID</th>
               <th className='px-[24px] py-[16px]'>Fingerprint</th>
@@ -40,29 +40,29 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
               <th className='px-[24px] py-[16px]'>Last Seen</th>
             </tr>
           </thead>
-          <tbody className='divide-y divide-slate-100 text-[14px]'>
+          <tbody className='divide-y divide-slate-100 dark:divide-white/20 text-[14px]'>
             {model.visitors.map((v) => (
               <tr 
                 key={v.id} 
-                className='cursor-pointer hover:bg-slate-50 transition-colors'
+                className='cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors'
                 onClick={() => dispatch({ _tag: 'SelectVisitor', visitor: O.some(v) })}
               >
-                <td className='px-[24px] py-[16px] font-mono text-slate-400'>{v.id}</td>
-                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-600'>
+                <td className='px-[24px] py-[16px] font-mono text-slate-400 dark:text-slate-200'>{v.id}</td>
+                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-600 dark:text-slate-200'>
                   {v.browserFingerprint.substring(0, 12)}...
                 </td>
-                <td className='px-[24px] py-[16px] text-slate-800'>{v.ipAddress}</td>
+                <td className='px-[24px] py-[16px] text-theme-secondary dark:text-white'>{v.ipAddress}</td>
                 <td className='px-[24px] py-[16px]'>
                   {v.userId ? (
-                    <span className='rounded-full bg-blue-50 px-[8px] py-[2px] text-blue-600 font-medium'>
+                    <span className='rounded-full bg-theme-primary/10 px-[8px] py-[2px] text-theme-primary font-medium'>
                       User #{v.userId}
                     </span>
                   ) : (
-                    <span className='text-slate-300'>Anonymous</span>
+                    <span className='text-slate-400 dark:text-slate-600'>Anonymous</span>
                   )}
                 </td>
-                <td className='px-[24px] py-[16px] font-bold text-slate-700'>{v.visitCount}</td>
-                <td className='px-[24px] py-[16px] text-slate-400'>{new Date(v.lastVisitAt).toLocaleString()}</td>
+                <td className='px-[24px] py-[16px] font-bold text-slate-700 dark:text-slate-200'>{v.visitCount}</td>
+                <td className='px-[24px] py-[16px] text-slate-400 dark:text-slate-200'>{new Date(v.lastVisitAt).toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

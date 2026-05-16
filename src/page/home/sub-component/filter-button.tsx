@@ -9,8 +9,8 @@ export const FilterButton: React.FC<{
     onClick={onClick}
     className={`rounded-[6px] px-[12px] py-[6px] text-[13px] font-medium transition-all ${
       active
-        ? 'bg-white text-blue-600 shadow-sm'
-        : 'text-slate-500 hover:text-slate-700'
+        ? 'bg-white dark:bg-surface-dark text-theme-primary shadow-sm'
+        : 'text-slate-500 dark:text-slate-200 hover:text-slate-700 dark:hover:text-slate-200'
     }`}
   >
     {label}

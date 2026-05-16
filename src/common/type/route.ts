@@ -7,6 +7,7 @@ export type ArticlesPage = { _tag: 'ArticlesPage' }
 export type UsersPage = { _tag: 'UsersPage' }
 export type CommentsPage = { _tag: 'CommentsPage' }
 export type VisitorsPage = { _tag: 'VisitorsPage' }
+export type SettingsPage = { _tag: 'SettingsPage' }
 export type NotFoundPage = { _tag: 'NotFoundPage' }
 
 export type AppPage =
@@ -16,6 +17,7 @@ export type AppPage =
   | UsersPage
   | CommentsPage
   | VisitorsPage
+  | SettingsPage
   | NotFoundPage
 
 export const HomePageEq: EqClass.Eq<HomePage> = EqClass.struct({
@@ -42,6 +44,10 @@ export const VisitorsPageEq: EqClass.Eq<VisitorsPage> = EqClass.struct({
   _tag: S.Eq,
 })
 
+export const SettingsPageEq: EqClass.Eq<SettingsPage> = EqClass.struct({
+  _tag: S.Eq,
+})
+
 export const NotFoundPageEq: EqClass.Eq<NotFoundPage> = EqClass.struct({
   _tag: S.Eq,
 })
@@ -62,6 +68,8 @@ export const AppPageEq: EqClass.Eq<AppPage> = {
         return CommentsPageEq.equals(a, b as CommentsPage)
       case 'VisitorsPage':
         return VisitorsPageEq.equals(a, b as VisitorsPage)
+      case 'SettingsPage':
+        return SettingsPageEq.equals(a, b as SettingsPage)
       case 'NotFoundPage':
         return NotFoundPageEq.equals(a, b as NotFoundPage)
     }
@@ -82,4 +90,5 @@ export const articlesPage = (): AppPage => ({ _tag: 'ArticlesPage' })
 export const usersPage = (): AppPage => ({ _tag: 'UsersPage' })
 export const commentsPage = (): AppPage => ({ _tag: 'CommentsPage' })
 export const visitorsPage = (): AppPage => ({ _tag: 'VisitorsPage' })
+export const settingsPage = (): AppPage => ({ _tag: 'SettingsPage' })
 export const notFoundPage = (): AppPage => ({ _tag: 'NotFoundPage' })

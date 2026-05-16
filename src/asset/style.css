@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Use class-based dark mode (.dark on <html>) instead of OS media query */
+@variant dark (&:where(.dark, .dark *));
+
+
 :root {
   --color-primary: #2563eb;
   --color-secondary: #0f172a;
@@ -32,15 +36,25 @@
   --color-theme-secondary: var(--color-secondary);
   --font-theme-header: var(--font-header);
   --font-theme-normal: var(--font-normal);
+
+  --color-surface-dark: #000000;
+  --color-surface: #ffffff;
+
+  /* Chart colors */
+  --color-chart-tick: #64748b; /* slate-500 */
+}
+
+.dark {
+  --color-chart-tick: #94a3b8; /* slate-400 */
 }
 
 /* Custom styles if needed */
 body {
-  @apply bg-gray-50 text-slate-900 font-theme-normal;
+  @apply bg-gray-50 dark:bg-black text-slate-900 dark:text-slate-200 font-theme-normal;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-theme-header;
+  @apply font-theme-header dark:text-white;
 }
 
 @keyframes persona-animate-float {

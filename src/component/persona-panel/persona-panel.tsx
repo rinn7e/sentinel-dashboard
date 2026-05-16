@@ -15,10 +15,12 @@ import { BrowserInfoSection } from './sub-component/browser-info-section'
  */
 
 import { type Theme } from '@/theme/type'
+import { type ColorScheme } from '@/theme/util'
 
 interface Props {
   model: Model
   theme: Theme
+  colorScheme: ColorScheme
   dispatch: Dispatcher<Msg>
   onSwitchTheme: (theme: Theme) => void
 }
@@ -30,7 +32,7 @@ const GearIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 )
 
-export const PersonaPanel: React.FC<Props> = ({ model, theme, dispatch, onSwitchTheme }) => {
+export const PersonaPanel: React.FC<Props> = ({ model, theme, colorScheme, dispatch, onSwitchTheme }) => {
   const clearCacheAndReload = () => {
     localStorage.clear()
     window.location.reload()
@@ -57,12 +59,12 @@ export const PersonaPanel: React.FC<Props> = ({ model, theme, dispatch, onSwitch
           <button
             type='button'
             onClick={() => dispatch({ _tag: 'ToggleCollapse' })}
-            className='flex h-[48px] w-[48px] items-start justify-end pr-[8px] pt-[8px] rounded-full bg-black text-indigo-400 shadow-xl border border-indigo-500/30'
+            className='flex h-[48px] w-[48px] items-start justify-end pr-[8px] pt-[8px] rounded-full bg-black text-theme-primary shadow-xl border border-theme-primary/30'
           >
             <GearIcon className='h-[20px] w-[20px] animate-[spin_10s_linear_infinite]' />
           </button>
         ) : (
-          <div className='relative mb-[24px] ml-[24px] min-h-[600px] overflow-hidden rounded-[16px] border border-indigo-500/30 bg-black shadow-2xl'>
+          <div className='relative mb-[24px] ml-[24px] min-h-[600px] overflow-hidden rounded-[16px] border border-theme-primary/30 bg-black shadow-2xl'>
             <HeroSection portraitUrl={persona.portraitUrl} />
             
             <div className='relative z-10 flex flex-col h-full'>
@@ -70,7 +72,7 @@ export const PersonaPanel: React.FC<Props> = ({ model, theme, dispatch, onSwitch
               <div className='h-[320px] w-full' />
 
               {/* Blurred content area */}
-              <div className='flex-1 p-[24px] backdrop-blur-md bg-black/40 border-t border-indigo-500/20'>
+              <div className='flex-1 p-[24px] backdrop-blur-md bg-black/40 border-t border-theme-primary/20'>
                 <PanelHeader 
                   name={persona.name} 
                   onToggleDetails={() => dispatch({ _tag: 'ToggleDetails' })} 
@@ -86,7 +88,10 @@ export const PersonaPanel: React.FC<Props> = ({ model, theme, dispatch, onSwitch
 
                 {!model.showDetails && (
                   <div className='mt-[24px] space-y-[24px]'>
-                    <BrowserInfoSection />
+                    <BrowserInfoSection
+                      themeName={theme.name}
+                      colorScheme={colorScheme}
+                    />
                     <ActionSection 
                       currentPersonaId={persona.id}
                       currentThemeId={theme.id}

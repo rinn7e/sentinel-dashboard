@@ -61,7 +61,7 @@ export const ActionSection: React.FC<{
       <div className='space-y-[8px]'>
         <button
           onClick={onClearCache}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-indigo-500/20 bg-slate-900/50 p-[16px] text-left transition-all hover:border-red-500/50 hover:bg-red-500/10'
+          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-red-500/50 hover:bg-red-500/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Clear Cache and Reload
@@ -86,7 +86,7 @@ export const ActionSection: React.FC<{
 
         <button
           onClick={takeScreenshot}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-indigo-500/20 bg-slate-900/50 p-[16px] text-left transition-all hover:border-indigo-500/50 hover:bg-indigo-500/10'
+          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Take Screenshot
@@ -94,7 +94,7 @@ export const ActionSection: React.FC<{
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-indigo-400'
+              className='h-[18px] w-[18px] text-theme-primary'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -109,14 +109,14 @@ export const ActionSection: React.FC<{
           </div>
         </button>
 
-        <button className='group flex w-full items-center justify-between rounded-[8px] border border-indigo-500/20 bg-slate-900/50 p-[16px] text-left transition-all hover:border-indigo-500/50 hover:bg-indigo-500/10'>
+        <button className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'>
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Show Debug
           </span>
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-indigo-400'
+              className='h-[18px] w-[18px] text-theme-primary'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -133,7 +133,7 @@ export const ActionSection: React.FC<{
 
         <button
           onClick={() => window.history.back()}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-indigo-500/20 bg-slate-900/50 p-[16px] text-left transition-all hover:border-indigo-500/50 hover:bg-indigo-500/10'
+          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Trigger Browser Back Button
@@ -141,7 +141,7 @@ export const ActionSection: React.FC<{
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-indigo-400'
+              className='h-[18px] w-[18px] text-theme-primary'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -157,10 +157,10 @@ export const ActionSection: React.FC<{
         </button>
       </div>
 
-      <div className='my-[8px] h-[1px] w-full bg-indigo-500/10' />
+      <div className='my-[8px] h-[1px] w-full bg-theme-primary/10' />
 
       <div className='space-y-[8px]'>
-        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-indigo-400 uppercase'>
+        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-theme-primary uppercase'>
           Theme Selection
         </span>
         <div className='grid grid-cols-3 gap-[8px]'>
@@ -170,12 +170,12 @@ export const ActionSection: React.FC<{
               onClick={() => onSwitchTheme(t)}
               className={`flex flex-col items-center justify-center rounded-[8px] border p-[8px] transition-all ${
                 currentThemeId === t.id
-                  ? 'border-indigo-500 bg-indigo-500/20 shadow-[0_0_10px_rgba(99,102,241,0.3)]'
-                  : 'border-indigo-500/20 bg-slate-900/50 hover:border-indigo-500/40 hover:bg-indigo-500/5'
+                  ? 'border-theme-primary bg-theme-primary/20 shadow-[0_0_10px_var(--color-primary)]'
+                  : 'border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/40 hover:bg-theme-primary/5'
               }`}
             >
               <span
-                className={`text-[10px] font-black tracking-tight uppercase ${currentThemeId === t.id ? 'text-white' : 'text-slate-400'}`}
+                className={`text-[10px] font-black tracking-tight uppercase ${currentThemeId === t.id ? 'text-white' : 'text-white/40'}`}
               >
                 {t.name}
               </span>
@@ -185,7 +185,7 @@ export const ActionSection: React.FC<{
       </div>
 
       <div className='space-y-[8px]'>
-        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-indigo-400 uppercase'>
+        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-theme-primary uppercase'>
           Persona Selection
         </span>
         <div className='grid grid-cols-3 gap-[8px]'>
@@ -195,12 +195,12 @@ export const ActionSection: React.FC<{
               onClick={() => onSwitchPersona(p)}
               className={`flex flex-col items-center justify-center rounded-[8px] border p-[8px] transition-all ${
                 currentPersonaId === p.id
-                  ? 'border-indigo-500 bg-indigo-500/20 shadow-[0_0_10px_rgba(99,102,241,0.3)]'
-                  : 'border-indigo-500/20 bg-slate-900/50 hover:border-indigo-500/40 hover:bg-indigo-500/5'
+                  ? 'border-theme-primary bg-theme-primary/20 shadow-[0_0_10px_var(--color-primary)]'
+                  : 'border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/40 hover:bg-theme-primary/5'
               }`}
             >
               <span
-                className={`text-[10px] font-black tracking-tight uppercase ${currentPersonaId === p.id ? 'text-white' : 'text-slate-400'}`}
+                className={`text-[10px] font-black tracking-tight uppercase ${currentPersonaId === p.id ? 'text-white' : 'text-white/40'}`}
               >
                 {p.id === 'hinata'
                   ? 'Hyuga'
