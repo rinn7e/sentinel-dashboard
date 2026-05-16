@@ -12,6 +12,8 @@ export const init = (): Update<Model, Msg> => {
       _tag: 'ArticlesModel',
       articles: mockArticles,
       selectedArticle: O.none,
+      searchText: '',
+      sort: { attr: 'createdAt', direction: 'desc' },
     },
     Cmd.none(),
   ]
@@ -21,6 +23,10 @@ export const update = (msg: Msg, model: Model): Update<Model, Msg> => {
   switch (msg._tag) {
     case 'SelectArticle':
       return [{ ...model, selectedArticle: msg.article }, Cmd.none()]
+    case 'ChangeSearchText':
+      return [{ ...model, searchText: msg.text }, Cmd.none()]
+    case 'ChangeSort':
+      return [{ ...model, sort: msg.sort }, Cmd.none()]
     case 'NoOp':
       return [model, Cmd.none()]
   }

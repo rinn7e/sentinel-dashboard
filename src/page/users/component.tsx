@@ -1,15 +1,33 @@
 import React from 'react'
 import * as O from 'fp-ts/lib/Option'
 
+import { SearchBar, type SearchOption } from '@/component/search-bar'
 import { memoStrategy } from '@/common/util'
 
 import { UserDetailOverlay } from './sub-component/user-detail-overlay'
 import { PropsEq, type Props } from './type'
 
+const sortOptions: SearchOption[] = [
+  { label: 'Username', value: 'username' },
+  { label: 'Email', value: 'email' },
+  { label: 'ID', value: 'id' },
+]
+
 export const UsersComponent: React.FC<Props> = ({ model, dispatch }) => {
   return (
-    <div className='relative flex flex-col gap-[24px]'>
-      <h2 className='text-[28px] font-bold text-slate-800'>Users</h2>
+    <div className='relative flex flex-col gap-[32px]'>
+      <div className='flex flex-col gap-[24px]'>
+        <h2 className='text-[28px] font-bold text-slate-800'>Users</h2>
+        <SearchBar
+          searchText={model.searchText}
+          sort={model.sort}
+          sortOptions={sortOptions}
+          onSearchChange={(text) => dispatch({ _tag: 'ChangeSearchText', text })}
+          onSortChange={(sort) => dispatch({ _tag: 'ChangeSort', sort })}
+          placeholder='Search users by username, email, or bio...'
+        />
+      </div>
+
       <div className='overflow-x-auto rounded-[12px] bg-white shadow-sm'>
         <table className='w-full text-left'>
           <thead className='bg-slate-50 text-[12px] font-semibold uppercase tracking-wider text-slate-500'>
