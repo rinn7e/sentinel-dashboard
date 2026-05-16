@@ -8,6 +8,7 @@ import * as Login from '@/page/login'
 import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
 import * as Persona from '@/component/persona-panel/type'
+import { type Theme } from './theme/type'
 
 export type User = {
   username: string
@@ -25,6 +26,8 @@ export type Model = {
   shared: Shared
   pageModel: PageModel
   persona: Persona.Model
+  showScrollTop: boolean
+  theme: Theme
 }
 
 export type PageModel =
@@ -46,4 +49,7 @@ export type Msg =
   | { _tag: 'CommentsPageMsg'; subMsg: Comments.Msg }
   | { _tag: 'VisitorsPageMsg'; subMsg: Visitors.Msg }
   | { _tag: 'PersonaMsg'; subMsg: Persona.Msg }
+  | { _tag: 'SetShowScrollTop'; value: boolean }
+  | { _tag: 'ScrollToTop' }
+  | { _tag: 'SwitchTheme'; theme: Theme }
   | { _tag: 'NoOp' }

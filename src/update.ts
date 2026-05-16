@@ -11,6 +11,8 @@ import * as Login from '@/page/login'
 import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
 import * as Persona from '@/component/persona-panel/update'
+import { defaultTheme } from './theme/data'
+import { injectTheme } from './theme/util'
 
 import { type Model, type Msg, type PageModel } from './type'
 
@@ -57,10 +59,18 @@ export const preInit = (location: Location): [Model, Cmd<Msg>] => {
     },
     pageModel,
     persona: personaModel,
+    showScrollTop: false,
+    theme: defaultTheme,
   }
+  
   return [model, Cmd.batch([
     pageCmd,
     personaCmd.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg })),
+    // Initial theme injection
+    Task.perform(Task.succeed(undefined).andThen(() => {
+      injectTheme(defaultTheme)
+      return Task.succeed(undefined)
+    }), () => ({ _tag: 'NoOp' } as Msg))
   ])]
 }
 
@@ -69,7 +79,7 @@ export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
     case 'UrlChange': {
       const route = parseAppRoute(window.location.origin, msg.location.href)
       const [pageModel, pageCmd] = initPageModel(route)
-      return [{ ...model, route, pageModel }, pageCmd]
+      return [{ ...model, route, pageModel, showScrollTop: false }, pageCmd]
     }
     case 'Navigate': {
       const url = toUrlString(msg.route)
@@ -120,6 +130,29 @@ export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
     case 'PersonaMsg': {
       const [m, c] = Persona.update(msg.subMsg, model.persona)
       return [{ ...model, persona: m }, c.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg }))]
+    }
+    case 'SetShowScrollTop':
+      return [{ ...model, showScrollTop: msg.value }, Cmd.none()]
+    case 'ScrollToTop': {
+      return [
+        model,
+        Task.perform(
+          Task.succeed(undefined).andThen(() => {
+            document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' })
+            return Task.succeed(undefined)
+          }),
+          () => ({ _tag: 'NoOp' } as Msg)
+        )
+      ]
+    }
+    case 'SwitchTheme': {
+      return [
+        { ...model, theme: msg.theme },
+        Task.perform(Task.succeed(undefined).andThen(() => {
+          injectTheme(msg.theme)
+          return Task.succeed(undefined)
+        }), () => ({ _tag: 'NoOp' } as Msg))
+      ]
     }
     case 'NoOp':
       return [model, Cmd.none()]

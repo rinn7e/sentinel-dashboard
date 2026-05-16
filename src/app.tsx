@@ -26,19 +26,21 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
         {renderPage(model, dispatch)}
         <PersonaPanel 
           model={model.persona} 
+          theme={model.theme}
           dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
+          onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
         />
       </main>
     )
   }
 
   return (
-    <div className='flex min-h-dvh flex-col bg-gray-50 lg:flex-row'>
+    <div className='flex h-dvh flex-col bg-gray-50 lg:flex-row overflow-hidden'>
       {/* Sidebar */}
-      <aside className='w-full bg-slate-900 text-white lg:w-[260px] lg:shrink-0'>
+      <aside className='w-full bg-theme-secondary text-white lg:w-[260px] lg:shrink-0'>
         <div className='p-[24px]'>
           <h1 className='text-[22px] font-bold tracking-tight'>Admin Panel</h1>
-          <p className='text-[12px] text-slate-400'>RealWorld Dashboard</p>
+          <p className='text-[12px] text-white/40'>RealWorld Dashboard</p>
         </div>
         <nav className='mt-[20px] flex flex-col gap-[4px] px-[12px]'>
           <SidebarLink
@@ -97,13 +99,37 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
       </aside>
 
       {/* Main Content */}
-      <main className='flex-grow overflow-y-auto p-[24px] lg:p-[40px]'>
+      <main 
+        id='main-content'
+        className='flex-grow overflow-y-auto p-[24px] lg:p-[40px] relative'
+        onScroll={(e) => {
+          const target = e.currentTarget
+          const shouldShow = target.scrollTop > 300
+          if (shouldShow !== model.showScrollTop) {
+            dispatch({ _tag: 'SetShowScrollTop', value: shouldShow })
+          }
+        }}
+      >
         {renderPage(model, dispatch)}
+        
+        {/* Scroll to Top Button */}
+        {model.showScrollTop && model.route.page._tag !== 'HomePage' && (
+          <button
+            onClick={() => dispatch({ _tag: 'ScrollToTop' })}
+            className='fixed bottom-[32px] right-[32px] z-[50] flex h-[48px] w-[48px] items-center justify-center rounded-full bg-theme-primary text-white shadow-2xl transition-all hover:scale-110 active:scale-95'
+          >
+            <svg xmlns='http://www.w3.org/2000/svg' className='h-[24px] w-[24px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 10l7-7m0 0l7 7m-7-7v18' />
+            </svg>
+          </button>
+        )}
       </main>
 
       <PersonaPanel 
         model={model.persona} 
+        theme={model.theme}
         dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
+        onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
       />
     </div>
   )
@@ -119,8 +145,8 @@ const SidebarLink: React.FC<{
     onClick={onClick}
     className={`flex w-full items-center gap-[12px] rounded-[8px] px-[16px] py-[12px] text-left transition-all duration-200 ${
       active
-        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20'
-        : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+        ? 'bg-theme-primary text-white shadow-lg shadow-theme-primary/20'
+        : 'text-white/60 hover:bg-white/10 hover:text-white'
     }`}
   >
     <span className='shrink-0'>{icon}</span>

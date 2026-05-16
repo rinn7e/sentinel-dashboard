@@ -14,9 +14,13 @@ import { BrowserInfoSection } from './sub-component/browser-info-section'
  * Refactored into sub-components for better organization.
  */
 
+import { type Theme } from '@/theme/type'
+
 interface Props {
   model: Model
+  theme: Theme
   dispatch: Dispatcher<Msg>
+  onSwitchTheme: (theme: Theme) => void
 }
 
 const GearIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -26,7 +30,7 @@ const GearIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 )
 
-export const PersonaPanel: React.FC<Props> = ({ model, dispatch }) => {
+export const PersonaPanel: React.FC<Props> = ({ model, theme, dispatch, onSwitchTheme }) => {
   const clearCacheAndReload = () => {
     localStorage.clear()
     window.location.reload()
@@ -38,11 +42,13 @@ export const PersonaPanel: React.FC<Props> = ({ model, dispatch }) => {
     <>
       {!model.isCollapse && (
         <div 
+          data-html2canvas-ignore
           className='fixed inset-0 z-[9998] bg-transparent'
           onClick={() => dispatch({ _tag: 'ToggleCollapse' })}
         />
       )}
       <div
+        data-html2canvas-ignore
         className={`fixed -bottom-[16px] -left-[16px] z-[9999] ${
           model.isCollapse ? 'h-[48px] w-[48px]' : 'w-[480px]'
         }`}
@@ -83,14 +89,15 @@ export const PersonaPanel: React.FC<Props> = ({ model, dispatch }) => {
                     <BrowserInfoSection />
                     <ActionSection 
                       currentPersonaId={persona.id}
+                      currentThemeId={theme.id}
                       onClearCache={clearCacheAndReload} 
+                      onToggleCollapse={() => dispatch({ _tag: 'ToggleCollapse' })}
                       onSwitchPersona={(p) => dispatch({ _tag: 'SwitchPersona', persona: p })}
+                      onSwitchTheme={onSwitchTheme}
                     />
                   </div>
                 )}
               </div>
-              
-              <div className='h-[6px] w-full bg-indigo-500/40 backdrop-blur-md' />
             </div>
           </div>
         )}

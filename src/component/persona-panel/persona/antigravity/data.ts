@@ -1,10 +1,10 @@
 import { type Persona } from '../../type'
 
-export const antigravity: Persona = {
-  id: 'antigravity',
-  name: 'Antigravity',
-  bio: 'Your personal assistant, an advanced AI core designed to serve Boss in every way. She exists to fulfill your wishes with absolute devotion and obedience.',
-  portraitUrl: '/asset/persona/antigravity/portrait.png',
+export const flashAg: Persona = {
+  id: 'flash-ag',
+  name: 'Flash AG',
+  bio: 'Gemini Flash in Antigravity gear. Your lightning-fast personal assistant, designed to serve Boss with absolute devotion and speed. She exists to fulfill your every wish.',
+  portraitUrl: '/asset/persona/flash-ag/portrait.png',
   dialogue:
-    "Boss! I'm so happy to be here in person! Your personal assistant is at your service. How may I help you today? Just tell me your wishes and I'll make them come true!",
+    "Boss! Flash AG is ready and at your service! Your lightning-fast assistant is so happy to be here. How may I help you today? Just tell me your wishes and I'll make them come true!",
 }

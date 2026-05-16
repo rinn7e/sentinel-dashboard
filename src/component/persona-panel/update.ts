@@ -6,7 +6,7 @@ export const init = (): [Model, Cmd<Msg>] => [
   {
     isCollapse: true,
     showDetails: false,
-    currentPersona: personas.antigravity,
+    currentPersona: personas.flashAg,
   },
   Cmd.none()
 ]
