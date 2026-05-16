@@ -3,7 +3,6 @@ import { newUrl } from 'react-tea-cup'
 import { Cmd, Task } from 'tea-cup-fp'
 
 import { type AppRoute } from '@/common/type/route'
-import { type Update } from '@/common/type/tea'
 import { parseAppRoute, toUrlString } from '@/common/util/route'
 import * as Articles from '@/page/articles'
 import * as Comments from '@/page/comments'
@@ -11,10 +10,11 @@ import * as Home from '@/page/home'
 import * as Login from '@/page/login'
 import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
+import * as Persona from '@/component/persona-panel/update'
 
 import { type Model, type Msg, type PageModel } from './type'
 
-export const initPageModel = (route: AppRoute): Update<PageModel, Msg> => {
+export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
   switch (route.page._tag) {
     case 'HomePage': {
       const [m, c] = Home.init()
@@ -46,20 +46,25 @@ export const initPageModel = (route: AppRoute): Update<PageModel, Msg> => {
   }
 }
 
-export const preInit = (location: Location): Update<Model, Msg> => {
+export const preInit = (location: Location): [Model, Cmd<Msg>] => {
   const route = parseAppRoute(window.location.origin, location.href)
   const [pageModel, pageCmd] = initPageModel(route)
+  const [personaModel, personaCmd] = Persona.init()
   const model: Model = {
     route,
     shared: {
       user: O.none,
     },
     pageModel,
+    persona: personaModel,
   }
-  return [model, pageCmd]
+  return [model, Cmd.batch([
+    pageCmd,
+    personaCmd.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg })),
+  ])]
 }
 
-export const preUpdate = (msg: Msg, model: Model): Update<Model, Msg> => {
+export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
   switch (msg._tag) {
     case 'UrlChange': {
       const route = parseAppRoute(window.location.origin, msg.location.href)
@@ -111,6 +116,10 @@ export const preUpdate = (msg: Msg, model: Model): Update<Model, Msg> => {
         return [{ ...model, pageModel: { ...model.pageModel, model: m } }, c.map((subMsg): Msg => ({ _tag: 'VisitorsPageMsg', subMsg }))]
       }
       return [model, Cmd.none()]
+    }
+    case 'PersonaMsg': {
+      const [m, c] = Persona.update(msg.subMsg, model.persona)
+      return [{ ...model, persona: m }, c.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg }))]
     }
     case 'NoOp':
       return [model, Cmd.none()]

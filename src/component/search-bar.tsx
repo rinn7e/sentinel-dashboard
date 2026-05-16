@@ -67,7 +67,16 @@ export const SearchBar: React.FC<Props> = ({
           onClick={() => onSortChange({ ...sort, direction: sort.direction === 'asc' ? 'desc' : 'asc' })}
           className='flex items-center gap-[8px] rounded-[10px] bg-blue-50 px-[16px] py-[10px] text-[14px] font-bold text-blue-600 hover:bg-blue-100 transition-colors'
         >
-          {sort.direction === 'asc' ? '↑ ASC' : '↓ DESC'}
+          {sort.direction === 'asc' ? (
+            <svg xmlns='http://www.w3.org/2000/svg' className='h-[16px] w-[16px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 15l7-7 7 7' />
+            </svg>
+          ) : (
+            <svg xmlns='http://www.w3.org/2000/svg' className='h-[16px] w-[16px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+            </svg>
+          )}
+          {sort.direction.toUpperCase()}
         </button>
       </div>
     </div>

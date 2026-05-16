@@ -53,8 +53,8 @@ export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
                 <td className='px-[24px] py-[16px] font-medium text-slate-800'>{a.title}</td>
                 <td className='px-[24px] py-[16px] text-slate-600'>{a.author.username}</td>
                 <td className='px-[24px] py-[16px] text-center'>
-                  <span className='rounded-full bg-pink-50 px-[10px] py-[4px] text-[12px] font-bold text-pink-500'>
-                    ♥ {a.favoritesCount}
+                  <span className='rounded-full bg-slate-50 px-[10px] py-[4px] text-[12px] font-bold text-slate-500'>
+                    {a.favoritesCount}
                   </span>
                 </td>
                 <td className='px-[24px] py-[16px] text-slate-400'>{new Date(a.createdAt).toLocaleDateString()}</td>

@@ -2,7 +2,6 @@ import { Cmd } from 'tea-cup-fp'
 import * as O from 'fp-ts/lib/Option'
 
 import { mockArticles, mockComments, mockUsers } from '@/common/api/type/mock'
-import { type Update } from '@/common/type/tea'
 
 import { type Model, type Msg, type TimeFilter, type VisitorStat, type ErrorLog } from './type'
 
@@ -84,7 +83,7 @@ const mockErrorLogs: ErrorLog[] = [
   },
 ]
 
-export const init = (): Update<Model, Msg> => {
+export const init = (): [Model, Cmd<Msg>] => {
   const currentFilter: TimeFilter = 'week'
   return [
     {
@@ -101,7 +100,7 @@ export const init = (): Update<Model, Msg> => {
   ]
 }
 
-export const update = (msg: Msg, model: Model): Update<Model, Msg> => {
+export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
   switch (msg._tag) {
     case 'ChangeFilter':
       return [

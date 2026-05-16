@@ -2,11 +2,10 @@ import { Cmd } from 'tea-cup-fp'
 import * as O from 'fp-ts/lib/Option'
 
 import { mockVisitors } from '@/common/api/type/mock'
-import { type Update } from '@/common/type/tea'
 
 import { type Model, type Msg } from './type'
 
-export const init = (): Update<Model, Msg> => {
+export const init = (): [Model, Cmd<Msg>] => {
   return [
     {
       _tag: 'VisitorsModel',
@@ -19,7 +18,7 @@ export const init = (): Update<Model, Msg> => {
   ]
 }
 
-export const update = (msg: Msg, model: Model): Update<Model, Msg> => {
+export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
   switch (msg._tag) {
     case 'SelectVisitor':
       return [{ ...model, selectedVisitor: msg.visitor }, Cmd.none()]

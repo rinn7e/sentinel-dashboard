@@ -7,6 +7,7 @@ import * as Home from '@/page/home'
 import * as Login from '@/page/login'
 import * as Users from '@/page/users'
 import * as Visitors from '@/page/visitors'
+import * as Persona from '@/component/persona-panel/type'
 
 export type User = {
   username: string
@@ -23,6 +24,7 @@ export type Model = {
   route: AppRoute
   shared: Shared
   pageModel: PageModel
+  persona: Persona.Model
 }
 
 export type PageModel =
@@ -43,4 +45,5 @@ export type Msg =
   | { _tag: 'UsersPageMsg'; subMsg: Users.Msg }
   | { _tag: 'CommentsPageMsg'; subMsg: Comments.Msg }
   | { _tag: 'VisitorsPageMsg'; subMsg: Visitors.Msg }
+  | { _tag: 'PersonaMsg'; subMsg: Persona.Msg }
   | { _tag: 'NoOp' }
