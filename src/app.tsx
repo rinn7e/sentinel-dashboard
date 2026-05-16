@@ -1,15 +1,22 @@
 import React from 'react'
 import { type Dispatcher } from 'tea-cup-fp'
 
-import { articlesPage, commentsPage, homePage, settingsPage, usersPage, visitorsPage } from '@/common/type/route'
+import {
+  articlesPage,
+  commentsPage,
+  homePage,
+  settingsPage,
+  usersPage,
+  visitorsPage,
+} from '@/common/type/route'
+import { PersonaPanel } from '@/component/persona-panel/persona-panel'
 import { ArticlesMemo } from '@/page/articles/component'
 import { CommentsMemo } from '@/page/comments/component'
 import { HomeMemo } from '@/page/home/component'
 import { LoginMemo } from '@/page/login/component'
+import { SettingsComponent } from '@/page/settings/component'
 import { UsersMemo } from '@/page/users/component'
 import { VisitorsMemo } from '@/page/visitors/component'
-import { SettingsComponent } from '@/page/settings/component'
-import { PersonaPanel } from '@/component/persona-panel/persona-panel'
 
 import { type Model, type Msg } from './type'
 
@@ -25,11 +32,11 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
     return (
       <main className='h-dvh bg-gray-50 dark:bg-black'>
         {renderPage(model, dispatch)}
-        <PersonaPanel 
-          model={model.persona} 
+        <PersonaPanel
+          model={model.persona}
           theme={model.theme}
           colorScheme={model.colorScheme}
-          dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
+          dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })}
           onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
         />
       </main>
@@ -37,86 +44,178 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
   }
 
   return (
-    <div className='flex h-dvh flex-col bg-gray-50 dark:bg-black lg:flex-row overflow-hidden'>
+    <div className='flex h-dvh flex-col overflow-hidden bg-gray-50 lg:flex-row dark:bg-black'>
       {/* Sidebar */}
-      <aside className='w-full bg-theme-secondary text-white lg:w-[260px] lg:shrink-0 flex flex-col'>
+      <aside className='bg-theme-secondary flex w-full flex-col text-white lg:w-[260px] lg:shrink-0'>
         <div className='p-[24px]'>
-          <h1 className='text-[22px] font-bold tracking-tight'>Admin Panel</h1>
-          <p className='text-[12px] text-white/40'>RealWorld Dashboard</p>
+          <h1 className='text-[22px] font-bold tracking-tight'>
+            Sentinel Dashboard
+          </h1>
         </div>
         <nav className='mt-[20px] flex flex-col gap-[4px] px-[12px]'>
           <SidebarLink
             label='Overview'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                />
               </svg>
             }
             active={model.route.page._tag === 'HomePage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: homePage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: homePage() } })
+            }
           />
           <SidebarLink
             label='Articles'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v12a2 2 0 01-2 2z' />
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M14 2v6h6' />
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M7 11h10M7 15h10' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v12a2 2 0 01-2 2z'
+                />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M14 2v6h6'
+                />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M7 11h10M7 15h10'
+                />
               </svg>
             }
             active={model.route.page._tag === 'ArticlesPage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: articlesPage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: articlesPage() } })
+            }
           />
           <SidebarLink
             label='Users'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z'
+                />
               </svg>
             }
             active={model.route.page._tag === 'UsersPage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: usersPage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: usersPage() } })
+            }
           />
           <SidebarLink
             label='Comments'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'
+                />
               </svg>
             }
             active={model.route.page._tag === 'CommentsPage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: commentsPage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: commentsPage() } })
+            }
           />
           <SidebarLink
             label='Visitors'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'
+                />
               </svg>
             }
             active={model.route.page._tag === 'VisitorsPage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: visitorsPage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: visitorsPage() } })
+            }
           />
           <SidebarLink
             label='Settings'
             icon={
-              <svg xmlns='http://www.w3.org/2000/svg' className='h-[20px] w-[20px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z' />
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[20px] w-[20px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z'
+                />
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+                />
               </svg>
             }
             active={model.route.page._tag === 'SettingsPage'}
-            onClick={() => dispatch({ _tag: 'Navigate', route: { page: settingsPage() } })}
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: settingsPage() } })
+            }
           />
         </nav>
-
-
       </aside>
 
       {/* Main Content */}
-      <main 
+      <main
         id='main-content'
-        className='flex-grow overflow-y-auto p-[24px] lg:p-[40px] relative'
+        className='relative flex-grow overflow-y-auto p-[24px] lg:p-[40px]'
         onScroll={(e) => {
           const target = e.currentTarget
           const shouldShow = target.scrollTop > 300
@@ -126,25 +225,36 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
         }}
       >
         {renderPage(model, dispatch)}
-        
+
         {/* Scroll to Top Button */}
         {model.showScrollTop && model.route.page._tag !== 'HomePage' && (
           <button
             onClick={() => dispatch({ _tag: 'ScrollToTop' })}
-            className='fixed bottom-[32px] right-[32px] z-[50] flex h-[48px] w-[48px] items-center justify-center rounded-full bg-theme-primary text-white shadow-2xl transition-all hover:scale-110 active:scale-95'
+            className='bg-theme-primary fixed right-[32px] bottom-[32px] z-[50] flex h-[48px] w-[48px] items-center justify-center rounded-full text-white shadow-2xl transition-all hover:scale-110 active:scale-95'
           >
-            <svg xmlns='http://www.w3.org/2000/svg' className='h-[24px] w-[24px]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 10l7-7m0 0l7 7m-7-7v18' />
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-[24px] w-[24px]'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M5 10l7-7m0 0l7 7m-7-7v18'
+              />
             </svg>
           </button>
         )}
       </main>
 
-      <PersonaPanel 
-        model={model.persona} 
+      <PersonaPanel
+        model={model.persona}
         theme={model.theme}
         colorScheme={model.colorScheme}
-        dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })} 
+        dispatch={(subMsg) => dispatch({ _tag: 'PersonaMsg', subMsg })}
         onSwitchTheme={(theme) => dispatch({ _tag: 'SwitchTheme', theme })}
       />
     </div>
@@ -161,7 +271,7 @@ const SidebarLink: React.FC<{
     onClick={onClick}
     className={`flex w-full items-center gap-[12px] rounded-[8px] px-[16px] py-[12px] text-left transition-all duration-200 ${
       active
-        ? 'bg-theme-primary text-white shadow-lg shadow-theme-primary/20'
+        ? 'bg-theme-primary shadow-theme-primary/20 text-white shadow-lg'
         : 'text-white/60 hover:bg-white/10 hover:text-white'
     }`}
   >

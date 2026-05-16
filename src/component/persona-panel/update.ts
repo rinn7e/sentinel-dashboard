@@ -7,6 +7,7 @@ export const init = (): [Model, Cmd<Msg>] => [
     isCollapse: true,
     showDetails: false,
     currentPersona: personas.flashAg,
+    hoveredAction: null,
   },
   Cmd.none()
 ]
@@ -18,6 +19,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
         {
           ...model,
           isCollapse: !model.isCollapse,
+          hoveredAction: null, // Reset hover state on collapse
         },
         Cmd.none()
       ]
@@ -35,6 +37,15 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           ...model,
           currentPersona: msg.persona,
           showDetails: false, // Reset details view when switching
+          hoveredAction: null,
+        },
+        Cmd.none()
+      ]
+    case 'SetHoveredAction':
+      return [
+        {
+          ...model,
+          hoveredAction: msg.action,
         },
         Cmd.none()
       ]

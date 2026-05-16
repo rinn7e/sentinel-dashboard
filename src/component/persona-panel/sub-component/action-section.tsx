@@ -3,31 +3,25 @@ import React from 'react'
 
 import { personas } from '../persona'
 import { type Persona } from '../type'
-import { themes } from '@/theme/data'
-import { type Theme } from '@/theme/type'
 
 export const ActionSection: React.FC<{
   currentPersonaId: string
-  currentThemeId: string
   onClearCache: () => void
   onToggleCollapse: () => void
   onSwitchPersona: (persona: Persona) => void
-  onSwitchTheme: (theme: Theme) => void
+  onHoverAction: (action: keyof Persona['actions'] | null) => void
 }> = ({
   currentPersonaId,
-  currentThemeId,
   onClearCache,
   onToggleCollapse,
   onSwitchPersona,
-  onSwitchTheme,
+  onHoverAction,
 }) => {
   const personaList = [
     personas.flashAg,
     personas.hinata,
     personas.hinataAndroid,
   ]
-
-  const themesList = Object.values(themes)
 
   const takeScreenshot = async () => {
     onToggleCollapse()
@@ -61,6 +55,8 @@ export const ActionSection: React.FC<{
       <div className='space-y-[8px]'>
         <button
           onClick={onClearCache}
+          onMouseEnter={() => onHoverAction('clearCache')}
+          onMouseLeave={() => onHoverAction(null)}
           className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-red-500/50 hover:bg-red-500/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
@@ -86,6 +82,8 @@ export const ActionSection: React.FC<{
 
         <button
           onClick={takeScreenshot}
+          onMouseEnter={() => onHoverAction('screenshot')}
+          onMouseLeave={() => onHoverAction(null)}
           className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
@@ -109,7 +107,11 @@ export const ActionSection: React.FC<{
           </div>
         </button>
 
-        <button className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'>
+        <button 
+          onMouseEnter={() => onHoverAction('debug')}
+          onMouseLeave={() => onHoverAction(null)}
+          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
+        >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Show Debug
           </span>
@@ -133,6 +135,8 @@ export const ActionSection: React.FC<{
 
         <button
           onClick={() => window.history.back()}
+          onMouseEnter={() => onHoverAction('back')}
+          onMouseLeave={() => onHoverAction(null)}
           className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
@@ -158,31 +162,6 @@ export const ActionSection: React.FC<{
       </div>
 
       <div className='my-[8px] h-[1px] w-full bg-theme-primary/10' />
-
-      <div className='space-y-[8px]'>
-        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-theme-primary uppercase'>
-          Theme Selection
-        </span>
-        <div className='grid grid-cols-3 gap-[8px]'>
-          {themesList.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => onSwitchTheme(t)}
-              className={`flex flex-col items-center justify-center rounded-[8px] border p-[8px] transition-all ${
-                currentThemeId === t.id
-                  ? 'border-theme-primary bg-theme-primary/20 shadow-[0_0_10px_var(--color-primary)]'
-                  : 'border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/40 hover:bg-theme-primary/5'
-              }`}
-            >
-              <span
-                className={`text-[10px] font-black tracking-tight uppercase ${currentThemeId === t.id ? 'text-white' : 'text-white/40'}`}
-              >
-                {t.name}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
 
       <div className='space-y-[8px]'>
         <span className='pl-[4px] text-[10px] font-bold tracking-widest text-theme-primary uppercase'>

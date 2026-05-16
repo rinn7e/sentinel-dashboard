@@ -2,7 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { type Dispatcher } from 'tea-cup-fp'
 
-import { type Model, type Msg } from './type'
+import { type Model, type Msg, type Persona } from './type'
 import { PanelHeader } from './sub-component/panel-header'
 import { DialogueSection } from './sub-component/dialogue-section'
 import { ActionSection } from './sub-component/action-section'
@@ -65,7 +65,10 @@ export const PersonaPanel: React.FC<Props> = ({ model, theme, colorScheme, dispa
           </button>
         ) : (
           <div className='relative mb-[24px] ml-[24px] min-h-[600px] overflow-hidden rounded-[16px] border border-theme-primary/30 bg-black shadow-2xl'>
-            <HeroSection portraitUrl={persona.portraitUrl} />
+            <HeroSection 
+              portraitUrl={persona.portraitUrl} 
+              hoveredDialogue={model.hoveredAction ? (persona.actions as any)[model.hoveredAction] : null}
+            />
             
             <div className='relative z-10 flex flex-col h-full'>
               {/* Clear space for the face */}
@@ -94,11 +97,10 @@ export const PersonaPanel: React.FC<Props> = ({ model, theme, colorScheme, dispa
                     />
                     <ActionSection 
                       currentPersonaId={persona.id}
-                      currentThemeId={theme.id}
                       onClearCache={clearCacheAndReload} 
                       onToggleCollapse={() => dispatch({ _tag: 'ToggleCollapse' })}
                       onSwitchPersona={(p) => dispatch({ _tag: 'SwitchPersona', persona: p })}
-                      onSwitchTheme={onSwitchTheme}
+                      onHoverAction={(action) => dispatch({ _tag: 'SetHoveredAction', action })}
                     />
                   </div>
                 )}

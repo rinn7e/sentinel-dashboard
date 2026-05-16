@@ -34,8 +34,8 @@ export const themes: Record<string, Theme> = {
     secondaryColorDarkMode: '#064e3b', // emerald-900 (lighter than light-mode secondary)
     // primaryColorDarkMode: '#34d399', // emerald-400
     // secondaryColorDarkMode: '#065f46', // emerald-900 (lighter than light-mode secondary)
-    headerFont: "'Roboto Condensed', sans-serif",
-    normalFont: "'Inter', sans-serif",
+    headerFont: "'JetBrains Mono', monospace",
+    normalFont: "'JetBrains Mono', monospace",
   },
 }
 
