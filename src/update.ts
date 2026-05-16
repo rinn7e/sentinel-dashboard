@@ -10,6 +10,7 @@ import * as Comments from '@/page/comments'
 import * as Home from '@/page/home'
 import * as Login from '@/page/login'
 import * as Users from '@/page/users'
+import * as Visitors from '@/page/visitors'
 
 import { type Model, type Msg, type PageModel } from './type'
 
@@ -34,6 +35,10 @@ export const initPageModel = (route: AppRoute): Update<PageModel, Msg> => {
     case 'CommentsPage': {
       const [m, c] = Comments.init()
       return [{ _tag: 'CommentsPageModel', model: m }, c.map((subMsg): Msg => ({ _tag: 'CommentsPageMsg', subMsg }))]
+    }
+    case 'VisitorsPage': {
+      const [m, c] = Visitors.init()
+      return [{ _tag: 'VisitorsPageModel', model: m }, c.map((subMsg): Msg => ({ _tag: 'VisitorsPageMsg', subMsg }))]
     }
     case 'NotFoundPage':
     default:
@@ -97,6 +102,13 @@ export const preUpdate = (msg: Msg, model: Model): Update<Model, Msg> => {
       if (model.pageModel._tag === 'CommentsPageModel') {
         const [m, c] = Comments.update(msg.subMsg, model.pageModel.model)
         return [{ ...model, pageModel: { ...model.pageModel, model: m } }, c.map((subMsg): Msg => ({ _tag: 'CommentsPageMsg', subMsg }))]
+      }
+      return [model, Cmd.none()]
+    }
+    case 'VisitorsPageMsg': {
+      if (model.pageModel._tag === 'VisitorsPageModel') {
+        const [m, c] = Visitors.update(msg.subMsg, model.pageModel.model)
+        return [{ ...model, pageModel: { ...model.pageModel, model: m } }, c.map((subMsg): Msg => ({ _tag: 'VisitorsPageMsg', subMsg }))]
       }
       return [model, Cmd.none()]
     }

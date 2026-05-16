@@ -5,22 +5,22 @@ import * as O from 'fp-ts/lib/Option'
 import * as S from 'fp-ts/lib/string'
 import { type Dispatcher } from 'tea-cup-fp'
 
-import { type Article, ArticleEq } from '@/common/api/type/article'
+import { type Visitor, VisitorEq } from '@/common/api/type/visitor'
 
 export type Model = {
-  readonly _tag: 'ArticlesModel'
-  readonly articles: Article[]
-  readonly selectedArticle: O.Option<Article>
+  readonly _tag: 'VisitorsModel'
+  readonly visitors: Visitor[]
+  readonly selectedVisitor: O.Option<Visitor>
 }
 
 export type Msg = 
   | { readonly _tag: 'NoOp' }
-  | { readonly _tag: 'SelectArticle'; readonly article: O.Option<Article> }
+  | { readonly _tag: 'SelectVisitor'; readonly visitor: O.Option<Visitor> }
 
 export const ModelEq: EqClass.Eq<Model> = EqClass.struct({
   _tag: S.Eq,
-  articles: A.getEq(ArticleEq),
-  selectedArticle: O.getEq(ArticleEq),
+  visitors: A.getEq(VisitorEq),
+  selectedVisitor: O.getEq(VisitorEq),
 })
 
 export type Props = {

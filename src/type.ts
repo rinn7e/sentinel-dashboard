@@ -6,6 +6,7 @@ import * as Comments from '@/page/comments'
 import * as Home from '@/page/home'
 import * as Login from '@/page/login'
 import * as Users from '@/page/users'
+import * as Visitors from '@/page/visitors'
 
 export type User = {
   username: string
@@ -30,6 +31,7 @@ export type PageModel =
   | { _tag: 'ArticlesPageModel'; model: Articles.Model }
   | { _tag: 'UsersPageModel'; model: Users.Model }
   | { _tag: 'CommentsPageModel'; model: Comments.Model }
+  | { _tag: 'VisitorsPageModel'; model: Visitors.Model }
   | { _tag: 'NotFoundPageModel' }
 
 export type Msg =
@@ -40,4 +42,5 @@ export type Msg =
   | { _tag: 'ArticlesPageMsg'; subMsg: Articles.Msg }
   | { _tag: 'UsersPageMsg'; subMsg: Users.Msg }
   | { _tag: 'CommentsPageMsg'; subMsg: Comments.Msg }
+  | { _tag: 'VisitorsPageMsg'; subMsg: Visitors.Msg }
   | { _tag: 'NoOp' }

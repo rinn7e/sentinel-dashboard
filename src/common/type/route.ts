@@ -1,29 +1,13 @@
 import * as EqClass from 'fp-ts/lib/Eq'
 import * as S from 'fp-ts/lib/string'
 
-export type HomePage = {
-  readonly _tag: 'HomePage'
-}
-
-export type LoginPage = {
-  readonly _tag: 'LoginPage'
-}
-
-export type ArticlesPage = {
-  readonly _tag: 'ArticlesPage'
-}
-
-export type UsersPage = {
-  readonly _tag: 'UsersPage'
-}
-
-export type CommentsPage = {
-  readonly _tag: 'CommentsPage'
-}
-
-export type NotFoundPage = {
-  readonly _tag: 'NotFoundPage'
-}
+export type HomePage = { _tag: 'HomePage' }
+export type LoginPage = { _tag: 'LoginPage' }
+export type ArticlesPage = { _tag: 'ArticlesPage' }
+export type UsersPage = { _tag: 'UsersPage' }
+export type CommentsPage = { _tag: 'CommentsPage' }
+export type VisitorsPage = { _tag: 'VisitorsPage' }
+export type NotFoundPage = { _tag: 'NotFoundPage' }
 
 export type AppPage =
   | HomePage
@@ -31,6 +15,7 @@ export type AppPage =
   | ArticlesPage
   | UsersPage
   | CommentsPage
+  | VisitorsPage
   | NotFoundPage
 
 export const HomePageEq: EqClass.Eq<HomePage> = EqClass.struct({
@@ -53,26 +38,32 @@ export const CommentsPageEq: EqClass.Eq<CommentsPage> = EqClass.struct({
   _tag: S.Eq,
 })
 
+export const VisitorsPageEq: EqClass.Eq<VisitorsPage> = EqClass.struct({
+  _tag: S.Eq,
+})
+
 export const NotFoundPageEq: EqClass.Eq<NotFoundPage> = EqClass.struct({
   _tag: S.Eq,
 })
 
 export const AppPageEq: EqClass.Eq<AppPage> = {
-  equals: (x, y) => {
-    if (x._tag === 'HomePage' && y._tag === 'HomePage') {
-      return HomePageEq.equals(x, y)
-    } else if (x._tag === 'LoginPage' && y._tag === 'LoginPage') {
-      return LoginPageEq.equals(x, y)
-    } else if (x._tag === 'ArticlesPage' && y._tag === 'ArticlesPage') {
-      return ArticlesPageEq.equals(x, y)
-    } else if (x._tag === 'UsersPage' && y._tag === 'UsersPage') {
-      return UsersPageEq.equals(x, y)
-    } else if (x._tag === 'CommentsPage' && y._tag === 'CommentsPage') {
-      return CommentsPageEq.equals(x, y)
-    } else if (x._tag === 'NotFoundPage' && y._tag === 'NotFoundPage') {
-      return NotFoundPageEq.equals(x, y)
-    } else {
-      return false
+  equals: (a, b) => {
+    if (a._tag !== b._tag) return false
+    switch (a._tag) {
+      case 'HomePage':
+        return HomePageEq.equals(a, b as HomePage)
+      case 'LoginPage':
+        return LoginPageEq.equals(a, b as LoginPage)
+      case 'ArticlesPage':
+        return ArticlesPageEq.equals(a, b as ArticlesPage)
+      case 'UsersPage':
+        return UsersPageEq.equals(a, b as UsersPage)
+      case 'CommentsPage':
+        return CommentsPageEq.equals(a, b as CommentsPage)
+      case 'VisitorsPage':
+        return VisitorsPageEq.equals(a, b as VisitorsPage)
+      case 'NotFoundPage':
+        return NotFoundPageEq.equals(a, b as NotFoundPage)
     }
   },
 }
@@ -85,13 +76,10 @@ export const AppRouteEq: EqClass.Eq<AppRoute> = EqClass.struct({
   page: AppPageEq,
 })
 
-export const defaultAppRoute = (): AppRoute => ({
-  page: { _tag: 'HomePage' },
-})
-
 export const homePage = (): AppPage => ({ _tag: 'HomePage' })
 export const loginPage = (): AppPage => ({ _tag: 'LoginPage' })
 export const articlesPage = (): AppPage => ({ _tag: 'ArticlesPage' })
 export const usersPage = (): AppPage => ({ _tag: 'UsersPage' })
 export const commentsPage = (): AppPage => ({ _tag: 'CommentsPage' })
+export const visitorsPage = (): AppPage => ({ _tag: 'VisitorsPage' })
 export const notFoundPage = (): AppPage => ({ _tag: 'NotFoundPage' })

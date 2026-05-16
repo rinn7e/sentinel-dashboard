@@ -1,15 +1,4 @@
-import {
-  Formatter,
-  Match,
-  Parser,
-  Route,
-  end,
-  format,
-  lit,
-  parse,
-  zero,
-} from '@rinn7e/fp-ts-routing'
-import * as O from 'fp-ts/lib/Option'
+import { end, format, lit, parse, Route, zero } from '@rinn7e/fp-ts-routing'
 
 import {
   type AppPage,
@@ -20,61 +9,48 @@ import {
   loginPage,
   notFoundPage,
   usersPage,
-} from '@/common/type/route'
-
-// Parser
-// ------------------------------------------------------------------
+  visitorsPage,
+} from '../type/route'
 
 const homeMatch = end
-const homeAliasMatch = lit('home').and(end)
 const loginMatch = lit('login').and(end)
 const articlesMatch = lit('articles').and(end)
 const usersMatch = lit('users').and(end)
 const commentsMatch = lit('comments').and(end)
+const visitorsMatch = lit('visitors').and(end)
 
-const anyStrings = new Match<object>(
-  new Parser((r) => O.some([{}, new Route([], r.query)])),
-  new Formatter((r) => r),
-)
+const appRouter = zero<AppPage>()
+  .alt(homeMatch.parser.map(homePage))
+  .alt(loginMatch.parser.map(loginPage))
+  .alt(articlesMatch.parser.map(articlesPage))
+  .alt(usersMatch.parser.map(usersPage))
+  .alt(commentsMatch.parser.map(commentsPage))
+  .alt(visitorsMatch.parser.map(visitorsPage))
 
-const appRouter: Parser<AppPage> = zero<AppPage>()
-  .alt(homeMatch.parser.map(() => homePage()))
-  .alt(homeAliasMatch.parser.map(() => homePage()))
-  .alt(loginMatch.parser.map(() => loginPage()))
-  .alt(articlesMatch.parser.map(() => articlesPage()))
-  .alt(usersMatch.parser.map(() => usersPage()))
-  .alt(commentsMatch.parser.map(() => commentsPage()))
-  .alt(anyStrings.parser.map(() => notFoundPage()))
-
-export const parseAppRoute = (_mainUrl: string, href: string): AppRoute => {
-  const url = new URL(href)
-  const pathname = url.pathname
-  // Simple pathname parsing for now, assuming base is /
-  const page = parse(appRouter, Route.parse(pathname), homePage())
+export const parseAppRoute = (origin: string, url: string): AppRoute => {
+  const path = url.replace(origin, '')
+  const page = parse(appRouter, Route.parse(path), notFoundPage())
   return { page }
 }
 
-// Formatter
-// ------------------------------------------------------------------
-
-export const toUrlString = (r: AppRoute): string => {
-  const page = r.page
-  const getPath = () => {
-    switch (page._tag) {
-      case 'HomePage':
-        return format(homeMatch.formatter, {})
-      case 'LoginPage':
-        return format(loginMatch.formatter, {})
-      case 'ArticlesPage':
-        return format(articlesMatch.formatter, {})
-      case 'UsersPage':
-        return format(usersMatch.formatter, {})
-      case 'CommentsPage':
-        return format(commentsMatch.formatter, {})
-      case 'NotFoundPage':
-        return '/404'
-    }
+export const toUrlString = (appRoute: AppRoute): string => {
+  const { page } = appRoute
+  switch (page._tag) {
+    case 'HomePage':
+      return format(homeMatch.formatter, {})
+    case 'LoginPage':
+      return format(loginMatch.formatter, {})
+    case 'ArticlesPage':
+      return format(articlesMatch.formatter, {})
+    case 'UsersPage':
+      return format(usersMatch.formatter, {})
+    case 'CommentsPage':
+      return format(commentsMatch.formatter, {})
+    case 'VisitorsPage':
+      return format(visitorsMatch.formatter, {})
+    case 'NotFoundPage':
+      return '/404'
+    default:
+      return '/404'
   }
-
-  return getPath()
 }

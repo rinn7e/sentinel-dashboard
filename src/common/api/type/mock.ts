@@ -1,6 +1,7 @@
 import { type Article } from './article'
 import { type Comment } from './comment'
 import { type User } from './user'
+import { type Visitor } from './visitor'
 
 // Helper to generate users
 const generateUsers = (count: number): User[] => {
@@ -57,6 +58,24 @@ const generateComments = (count: number, users: User[]): Comment[] => {
   })
 }
 
+// Helper to generate visitors
+const generateVisitors = (count: number, users: User[]): Visitor[] => {
+  return Array.from({ length: count }, (_, i) => {
+    const isUser = i % 3 === 0
+    const user = isUser ? users[i % users.length] : null
+    return {
+      id: i + 1,
+      browserFingerprint: `fingerprint_${Math.random().toString(36).substring(7)}`,
+      userId: user ? user.id : null,
+      ipAddress: `192.168.1.${i + 1}`,
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      visitCount: (i % 10) + 1,
+      lastVisitAt: new Date(Date.now() - i * 900000).toISOString(),
+    }
+  })
+}
+
 export const mockUsers = generateUsers(50)
 export const mockArticles = generateArticles(50, mockUsers)
 export const mockComments = generateComments(50, mockUsers)
+export const mockVisitors = generateVisitors(60, mockUsers)

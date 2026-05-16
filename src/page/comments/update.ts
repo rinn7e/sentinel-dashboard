@@ -1,4 +1,5 @@
 import { Cmd } from 'tea-cup-fp'
+import * as O from 'fp-ts/lib/Option'
 
 import { mockComments } from '@/common/api/type/mock'
 import { type Update } from '@/common/type/tea'
@@ -10,6 +11,7 @@ export const init = (): Update<Model, Msg> => {
     {
       _tag: 'CommentsModel',
       comments: mockComments,
+      selectedComment: O.none,
     },
     Cmd.none(),
   ]
@@ -17,6 +19,8 @@ export const init = (): Update<Model, Msg> => {
 
 export const update = (msg: Msg, model: Model): Update<Model, Msg> => {
   switch (msg._tag) {
+    case 'SelectComment':
+      return [{ ...model, selectedComment: msg.comment }, Cmd.none()]
     case 'NoOp':
       return [model, Cmd.none()]
   }
