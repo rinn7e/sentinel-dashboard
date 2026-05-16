@@ -3,6 +3,7 @@ import * as O from 'fp-ts/lib/Option'
 
 import { memoStrategy } from '@/common/util'
 
+import { VisitorDetailOverlay } from './sub-component/visitor-detail-overlay'
 import { PropsEq, type Props } from './type'
 
 export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
@@ -50,54 +51,12 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
         </table>
       </div>
 
-      {/* Detail Overlay */}
-      {O.isSome(model.selectedVisitor) && (
-        <>
-          <div 
-            className='fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-[2px]' 
-            onClick={() => dispatch({ _tag: 'SelectVisitor', visitor: O.none })}
-          />
-          <div className='fixed right-0 top-0 z-50 h-full w-full max-w-[50%] animate-in slide-in-from-right bg-white shadow-2xl duration-300'>
-            <div className='flex h-full flex-col'>
-              <div className='flex items-center justify-between border-b border-slate-100 p-[24px]'>
-                <h3 className='text-[20px] font-bold text-slate-800'>Visitor Details</h3>
-                <button 
-                  onClick={() => dispatch({ _tag: 'SelectVisitor', visitor: O.none })}
-                  className='rounded-full p-[8px] text-slate-400 hover:bg-slate-50 hover:text-slate-600'
-                >
-                  ✕
-                </button>
-              </div>
-              <div className='flex-grow overflow-y-auto p-[24px]'>
-                <DetailRow label='Internal ID' value={model.selectedVisitor.value.id.toString()} mono />
-                <DetailRow label='Fingerprint' value={model.selectedVisitor.value.browserFingerprint} mono />
-                <DetailRow label='IP Address' value={model.selectedVisitor.value.ipAddress} />
-                <DetailRow 
-                  label='Status' 
-                  value={model.selectedVisitor.value.userId ? `Linked to User #${model.selectedVisitor.value.userId}` : 'Anonymous'} 
-                />
-                <DetailRow label='Total Visits' value={model.selectedVisitor.value.visitCount.toString()} />
-                <DetailRow label='Last Visit At' value={new Date(model.selectedVisitor.value.lastVisitAt).toLocaleString()} />
-                <div className='mt-[24px]'>
-                  <div className='mb-[8px] text-[12px] font-semibold uppercase tracking-wider text-slate-400'>User Agent</div>
-                  <div className='rounded-[8px] bg-slate-50 p-[16px] font-mono text-[12px] leading-relaxed text-slate-600'>
-                    {model.selectedVisitor.value.userAgent || 'No User Agent recorded'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      <VisitorDetailOverlay 
+        selectedVisitor={model.selectedVisitor} 
+        dispatch={dispatch} 
+      />
     </div>
   )
 }
-
-const DetailRow: React.FC<{ label: string; value: string; mono?: boolean }> = ({ label, value, mono }) => (
-  <div className='mb-[24px]'>
-    <div className='mb-[4px] text-[12px] font-semibold uppercase tracking-wider text-slate-400'>{label}</div>
-    <div className={`text-[16px] text-slate-800 ${mono ? 'font-mono' : ''}`}>{value}</div>
-  </div>
-)
 
 export const VisitorsMemo = memoStrategy(VisitorsComponent, PropsEq.equals)
