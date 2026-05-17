@@ -1,8 +1,8 @@
 import { EqAlways } from '@rinn7e/tea-cup-prelude'
 import * as A from 'fp-ts/lib/Array'
 import * as EqClass from 'fp-ts/lib/Eq'
-import * as N from 'fp-ts/lib/number'
 import * as O from 'fp-ts/lib/Option'
+import * as N from 'fp-ts/lib/number'
 import * as S from 'fp-ts/lib/string'
 import { type Dispatcher } from 'tea-cup-fp'
 
@@ -49,7 +49,7 @@ export type Model = {
   readonly selectedLog: O.Option<ErrorLog>
 }
 
-export type Msg = 
+export type Msg =
   | { readonly _tag: 'NoOp' }
   | { readonly _tag: 'ChangeFilter'; readonly filter: TimeFilter }
   | { readonly _tag: 'SelectLog'; readonly log: O.Option<ErrorLog> }
@@ -64,7 +64,7 @@ export const MsgEq: EqClass.Eq<Msg> = {
       return O.getEq(ErrorLogEq).equals(a.log, b.log)
     }
     return true // Both are NoOp
-  }
+  },
 }
 
 export const ModelEq: EqClass.Eq<Model> = EqClass.struct({

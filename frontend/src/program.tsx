@@ -2,8 +2,7 @@ import { devTools } from '@rinn7e/tea-cup-prelude'
 import { ProgramWithNav } from 'react-tea-cup'
 import { type Dispatcher, Sub } from 'tea-cup-fp'
 
-// @ts-ignore
-import './asset/style.css'
+import '@/asset/style.css'
 
 import { App } from './app'
 import { type Model, type Msg } from './type'

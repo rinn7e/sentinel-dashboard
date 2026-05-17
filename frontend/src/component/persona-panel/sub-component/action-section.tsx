@@ -57,7 +57,7 @@ export const ActionSection: React.FC<{
           onClick={onClearCache}
           onMouseEnter={() => onHoverAction('clearCache')}
           onMouseLeave={() => onHoverAction(null)}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-red-500/50 hover:bg-red-500/10'
+          className='group border-theme-primary/20 bg-theme-secondary/50 flex w-full items-center justify-between rounded-[8px] border p-[16px] text-left transition-all hover:border-red-500/50 hover:bg-red-500/10'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Clear Cache and Reload
@@ -84,7 +84,7 @@ export const ActionSection: React.FC<{
           onClick={takeScreenshot}
           onMouseEnter={() => onHoverAction('screenshot')}
           onMouseLeave={() => onHoverAction(null)}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
+          className='group border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/50 hover:bg-theme-primary/10 flex w-full items-center justify-between rounded-[8px] border p-[16px] text-left transition-all'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Take Screenshot
@@ -92,7 +92,7 @@ export const ActionSection: React.FC<{
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-theme-primary'
+              className='text-theme-primary h-[18px] w-[18px]'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -107,10 +107,10 @@ export const ActionSection: React.FC<{
           </div>
         </button>
 
-        <button 
+        <button
           onMouseEnter={() => onHoverAction('debug')}
           onMouseLeave={() => onHoverAction(null)}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
+          className='group border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/50 hover:bg-theme-primary/10 flex w-full items-center justify-between rounded-[8px] border p-[16px] text-left transition-all'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Show Debug
@@ -118,7 +118,7 @@ export const ActionSection: React.FC<{
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-theme-primary'
+              className='text-theme-primary h-[18px] w-[18px]'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -137,7 +137,7 @@ export const ActionSection: React.FC<{
           onClick={() => window.history.back()}
           onMouseEnter={() => onHoverAction('back')}
           onMouseLeave={() => onHoverAction(null)}
-          className='group flex w-full items-center justify-between rounded-[8px] border border-theme-primary/20 bg-theme-secondary/50 p-[16px] text-left transition-all hover:border-theme-primary/50 hover:bg-theme-primary/10'
+          className='group border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/50 hover:bg-theme-primary/10 flex w-full items-center justify-between rounded-[8px] border p-[16px] text-left transition-all'
         >
           <span className='text-[14px] font-black tracking-wider text-white uppercase'>
             Trigger Browser Back Button
@@ -145,7 +145,7 @@ export const ActionSection: React.FC<{
           <div className='opacity-0 transition-opacity group-hover:opacity-100'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
-              className='h-[18px] w-[18px] text-theme-primary'
+              className='text-theme-primary h-[18px] w-[18px]'
               fill='none'
               viewBox='0 0 24 24'
               stroke='currentColor'
@@ -161,10 +161,10 @@ export const ActionSection: React.FC<{
         </button>
       </div>
 
-      <div className='my-[8px] h-[1px] w-full bg-theme-primary/10' />
+      <div className='bg-theme-primary/10 my-[8px] h-[1px] w-full' />
 
       <div className='space-y-[8px]'>
-        <span className='pl-[4px] text-[10px] font-bold tracking-widest text-theme-primary uppercase'>
+        <span className='text-theme-primary pl-[4px] text-[10px] font-bold tracking-widest uppercase'>
           Persona Selection
         </span>
         <div className='grid grid-cols-3 gap-[8px]'>

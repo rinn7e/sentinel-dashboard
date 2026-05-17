@@ -1,6 +1,7 @@
 import { Cmd } from 'tea-cup-fp'
-import { type Model, type Msg } from './type'
+
 import { personas } from './persona'
+import { type Model, type Msg } from './type'
 
 export const init = (): [Model, Cmd<Msg>] => [
   {
@@ -9,7 +10,7 @@ export const init = (): [Model, Cmd<Msg>] => [
     currentPersona: personas.flashAg,
     hoveredAction: null,
   },
-  Cmd.none()
+  Cmd.none(),
 ]
 
 export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
@@ -21,7 +22,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           isCollapse: !model.isCollapse,
           hoveredAction: null, // Reset hover state on collapse
         },
-        Cmd.none()
+        Cmd.none(),
       ]
     case 'ToggleDetails':
       return [
@@ -29,7 +30,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           ...model,
           showDetails: !model.showDetails,
         },
-        Cmd.none()
+        Cmd.none(),
       ]
     case 'SwitchPersona':
       return [
@@ -39,7 +40,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           showDetails: false, // Reset details view when switching
           hoveredAction: null,
         },
-        Cmd.none()
+        Cmd.none(),
       ]
     case 'SetHoveredAction':
       return [
@@ -47,7 +48,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           ...model,
           hoveredAction: msg.action,
         },
-        Cmd.none()
+        Cmd.none(),
       ]
     case 'NoOp':
       return [model, Cmd.none()]

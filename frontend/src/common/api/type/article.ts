@@ -1,6 +1,6 @@
 import * as A from 'fp-ts/lib/Array'
-import * as B from 'fp-ts/lib/boolean'
 import * as EqClass from 'fp-ts/lib/Eq'
+import * as B from 'fp-ts/lib/boolean'
 import * as N from 'fp-ts/lib/number'
 import * as S from 'fp-ts/lib/string'
 import * as t from 'io-ts'

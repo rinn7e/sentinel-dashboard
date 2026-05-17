@@ -1,4 +1,4 @@
-import { end, format, lit, parse, Route, zero } from '@rinn7e/fp-ts-routing'
+import { Route, end, format, lit, parse, zero } from '@rinn7e/fp-ts-routing'
 
 import { BASE_URL } from '../env'
 import {
@@ -79,4 +79,3 @@ export const toUrlString = (appRoute: AppRoute): string => {
   }
   return addBaseUrl(getPath())
 }
-

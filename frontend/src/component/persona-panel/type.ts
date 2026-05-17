@@ -44,7 +44,7 @@ export const ModelEq = EqClass.struct<Model>({
   hoveredAction: EqClass.fromEquals((a, b) => a === b),
 })
 
-export type Msg = 
+export type Msg =
   | { _tag: 'ToggleCollapse' }
   | { _tag: 'ToggleDetails' }
   | { _tag: 'SwitchPersona'; persona: Persona }

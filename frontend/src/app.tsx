@@ -48,9 +48,17 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
       {/* Sidebar */}
       <aside className='bg-theme-secondary flex w-full flex-col text-white lg:w-[260px] lg:shrink-0'>
         <div className='p-[24px]'>
-          <h1 className='text-[22px] font-bold tracking-tight'>
-            Sentinel Dashboard
-          </h1>
+          <button
+            type='button'
+            onClick={() =>
+              dispatch({ _tag: 'Navigate', route: { page: homePage() } })
+            }
+            className='text-left transition-opacity hover:opacity-85'
+          >
+            <h1 className='text-[22px] font-bold tracking-tight text-white hover:underline'>
+              Sentinel Dashboard
+            </h1>
+          </button>
         </div>
         <nav className='mt-[20px] flex flex-col gap-[4px] px-[12px]'>
           <SidebarLink

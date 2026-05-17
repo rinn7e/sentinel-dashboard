@@ -68,7 +68,8 @@ const generateVisitors = (count: number, users: User[]): Visitor[] => {
       browserFingerprint: `fingerprint_${Math.random().toString(36).substring(7)}`,
       userId: user ? user.id : null,
       ipAddress: `192.168.1.${i + 1}`,
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
       visitCount: (i % 10) + 1,
       lastVisitAt: new Date(Date.now() - i * 900000).toISOString(),
     }

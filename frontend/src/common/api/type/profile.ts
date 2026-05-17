@@ -1,6 +1,6 @@
 import { NullableEq } from '@rinn7e/tea-cup-prelude'
-import * as B from 'fp-ts/lib/boolean'
 import * as EqClass from 'fp-ts/lib/Eq'
+import * as B from 'fp-ts/lib/boolean'
 import * as S from 'fp-ts/lib/string'
 import * as t from 'io-ts'
 

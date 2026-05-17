@@ -1,5 +1,5 @@
-import { Cmd } from 'tea-cup-fp'
 import * as O from 'fp-ts/lib/Option'
+import { Cmd } from 'tea-cup-fp'
 
 import { mockVisitors } from '@/common/api/type/mock'
 

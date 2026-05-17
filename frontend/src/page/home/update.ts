@@ -1,9 +1,15 @@
-import { Cmd } from 'tea-cup-fp'
 import * as O from 'fp-ts/lib/Option'
+import { Cmd } from 'tea-cup-fp'
 
 import { mockArticles, mockComments, mockUsers } from '@/common/api/type/mock'
 
-import { type Model, type Msg, type TimeFilter, type VisitorStat, type ErrorLog } from './type'
+import {
+  type ErrorLog,
+  type Model,
+  type Msg,
+  type TimeFilter,
+  type VisitorStat,
+} from './type'
 
 const getStatsForFilter = (filter: TimeFilter): VisitorStat[] => {
   switch (filter) {
@@ -77,7 +83,8 @@ const mockErrorLogs: ErrorLog[] = [
   {
     id: 4,
     level: 'error',
-    message: 'Critical Database Exception: \n[DB_ERROR] Connection reset by peer at 10.0.4.12:5432\n  at Database.PostgreSQL.Simple.Internal.exec (src/Database/PostgreSQL/Simple/Internal.hs:412:12)\n  at Database.Persist.Sql.Raw.executeWith (src/Database/Persist/Sql/Raw.hs:82:17)\n  at DB.Schema.Article.fetchArticles (src/DB/Schema/Article.hs:156:5)\n  at API.Handler.Article.getArticles (src/API/Handler/Article.hs:42:19)\n  at Servant.Server.Internal.runHandler (src/Servant/Server/Internal.hs:124:5)\n  at Main.main (app/Main.hs:88:3)',
+    message:
+      'Critical Database Exception: \n[DB_ERROR] Connection reset by peer at 10.0.4.12:5432\n  at Database.PostgreSQL.Simple.Internal.exec (src/Database/PostgreSQL/Simple/Internal.hs:412:12)\n  at Database.Persist.Sql.Raw.executeWith (src/Database/Persist/Sql/Raw.hs:82:17)\n  at DB.Schema.Article.fetchArticles (src/DB/Schema/Article.hs:156:5)\n  at API.Handler.Article.getArticles (src/API/Handler/Article.hs:42:19)\n  at Servant.Server.Internal.runHandler (src/Servant/Server/Internal.hs:124:5)\n  at Main.main (app/Main.hs:88:3)',
     source: 'DB.Internal:412',
     timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
   },

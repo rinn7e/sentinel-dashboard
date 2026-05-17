@@ -1,8 +1,7 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Use class-based dark mode (.dark on <html>) instead of OS media query */
 @variant dark (&:where(.dark, .dark *));
-
 
 :root {
   --color-primary: #2563eb;
@@ -20,14 +19,14 @@
   --color-slate-600: #475569;
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
-  
+
   --color-blue-500: #3b82f6;
   --color-blue-600: #2563eb;
   --color-blue-700: #1d4ed8;
-  
+
   --color-green-500: #22c55e;
   --color-green-600: #16a34a;
-  
+
   --color-purple-500: #a855f7;
   --color-amber-600: #d97706;
 
@@ -50,21 +49,43 @@
 
 /* Custom styles if needed */
 body {
-  @apply bg-gray-50 dark:bg-black text-slate-900 dark:text-slate-200 font-theme-normal;
+  @apply font-theme-normal bg-gray-50 text-slate-900 dark:bg-black dark:text-slate-200;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @apply font-theme-header dark:text-white;
 }
 
 @keyframes persona-animate-float {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(4px, 0); }
-  50% { transform: translate(4px, -4px); }
-  75% { transform: translate(0, -4px); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(4px, 0);
+  }
+  50% {
+    transform: translate(4px, -4px);
+  }
+  75% {
+    transform: translate(0, -4px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .animate-persona {
   animation: persona-animate-float 5s ease-in-out infinite;
+}
+
+button,
+a,
+select,
+[role='button'] {
+  cursor: pointer;
 }

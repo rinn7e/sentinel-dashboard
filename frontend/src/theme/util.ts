@@ -6,7 +6,8 @@ const COLOR_SCHEME_KEY = 'admin-color-scheme'
 
 export const loadColorScheme = (): ColorScheme => {
   const stored = localStorage.getItem(COLOR_SCHEME_KEY)
-  if (stored === 'light' || stored === 'dark' || stored === 'auto') return stored
+  if (stored === 'light' || stored === 'dark' || stored === 'auto')
+    return stored
   return 'auto'
 }
 
@@ -34,8 +35,14 @@ export const injectTheme = (theme: Theme, scheme: ColorScheme): void => {
   const root = document.documentElement
   const isDark = resolveIsDark(scheme)
 
-  root.style.setProperty('--color-primary', isDark ? theme.primaryColorDarkMode : theme.primaryColor)
-  root.style.setProperty('--color-secondary', isDark ? theme.secondaryColorDarkMode : theme.secondaryColor)
+  root.style.setProperty(
+    '--color-primary',
+    isDark ? theme.primaryColorDarkMode : theme.primaryColor,
+  )
+  root.style.setProperty(
+    '--color-secondary',
+    isDark ? theme.secondaryColorDarkMode : theme.secondaryColor,
+  )
   root.style.setProperty('--font-header', theme.headerFont)
   root.style.setProperty('--font-normal', theme.normalFont)
 

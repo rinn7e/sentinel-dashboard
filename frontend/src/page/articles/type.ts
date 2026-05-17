@@ -16,7 +16,7 @@ export type Model = {
   readonly sort: Sort
 }
 
-export type Msg = 
+export type Msg =
   | { readonly _tag: 'NoOp' }
   | { readonly _tag: 'SelectArticle'; readonly article: O.Option<Article> }
   | { readonly _tag: 'ChangeSearchText'; readonly text: string }

@@ -1,13 +1,14 @@
 import { type Option } from 'fp-ts/lib/Option'
 
 import { type AppRoute } from '@/common/type/route'
-import * as Articles from '@/page/articles'
-import * as Comments from '@/page/comments'
-import * as Home from '@/page/home'
-import * as Login from '@/page/login'
-import * as Users from '@/page/users'
-import * as Visitors from '@/page/visitors'
-import * as Persona from '@/component/persona-panel/type'
+import type * as Persona from '@/component/persona-panel/type'
+import type * as Articles from '@/page/articles'
+import type * as Comments from '@/page/comments'
+import type * as Home from '@/page/home'
+import type * as Login from '@/page/login'
+import type * as Users from '@/page/users'
+import type * as Visitors from '@/page/visitors'
+
 import { type Theme } from './theme/type'
 import { type ColorScheme } from './theme/util'
 

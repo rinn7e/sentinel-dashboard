@@ -1,6 +1,6 @@
-import { hinata } from './hinata/data'
-import { hinataAndroid } from './hinata-android/data'
 import { flashAg } from './antigravity/data'
+import { hinataAndroid } from './hinata-android/data'
+import { hinata } from './hinata/data'
 
 export const personas = {
   hinata,
