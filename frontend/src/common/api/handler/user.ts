@@ -35,6 +35,18 @@ export const login = (
     TE.mapLeft(decodeApiError),
   )
 
+export const getCurrentUser = (
+  token: string,
+): TE.TaskEither<HttpError<ApiError>, UserResponse> =>
+  pipe(
+    fetch(`${API_BASE}/admin/user`, {
+      headers: { Authorization: `Token ${token}` },
+    }),
+    fetchToTaskEither,
+    TE.chainEitherK(decodeSuccess(UserResponseJson)),
+    TE.mapLeft(decodeApiError),
+  )
+
 export const getAdminUsers = (
   token: string,
   params: {

@@ -337,6 +337,7 @@ const renderPage = (model: Model, dispatch: Dispatcher<Msg>) => {
     case 'SettingsPageModel':
       return (
         <SettingsComponent
+          user={model.shared.user}
           colorScheme={model.colorScheme}
           theme={model.theme}
           dispatch={dispatch}

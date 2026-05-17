@@ -16,11 +16,13 @@ export type User = {
   username: string
   email: string
   token: string
+  bio: string | null
+  image: string | null
 }
 
 export type Shared = {
-  // TODO: Implement real authentication logic and session management
   user: Option<User>
+  token: Option<string>
 }
 
 export type Model = {
@@ -46,6 +48,8 @@ export type PageModel =
 export type Msg =
   | { _tag: 'UrlChange'; location: Location }
   | { _tag: 'Navigate'; route: AppRoute }
+  | { _tag: 'InitSession'; user: Option<User>; token: Option<string> }
+  | { _tag: 'Logout' }
   | { _tag: 'HomePageMsg'; subMsg: Home.Msg }
   | { _tag: 'LoginPageMsg'; subMsg: Login.Msg }
   | { _tag: 'ArticlesPageMsg'; subMsg: Articles.Msg }

@@ -1,10 +1,11 @@
+import * as O from 'fp-ts/lib/Option'
 import React from 'react'
 import { type Dispatcher } from 'tea-cup-fp'
 
 import { themes } from '@/theme/data'
 import { type Theme } from '@/theme/type'
 import { type ColorScheme } from '@/theme/util'
-import { type Msg } from '@/type'
+import { type Msg, type User } from '@/type'
 
 const SunIcon = () => (
   <svg
@@ -104,10 +105,11 @@ const schemeOptions: SchemeOption[] = [
 ]
 
 export const SettingsComponent: React.FC<{
+  user: O.Option<User>
   colorScheme: ColorScheme
   theme: Theme
   dispatch: Dispatcher<Msg>
-}> = ({ colorScheme, theme, dispatch }) => {
+}> = ({ user, colorScheme, theme, dispatch }) => {
   const themesList = Object.values(themes)
 
   return (
@@ -117,9 +119,72 @@ export const SettingsComponent: React.FC<{
           Settings
         </h2>
         <p className='mt-[4px] text-slate-500 dark:text-slate-200'>
-          Manage your appearance preferences.
+          Manage your account preferences and appearance.
         </p>
       </div>
+
+      {/* Account Profile Section */}
+      {O.isSome(user) && (
+        <section className='dark:bg-slate-900 overflow-hidden rounded-[24px] border border-slate-100 bg-white p-[32px] shadow-lg dark:border-white/5 dark:bg-slate-900'>
+          <div className='flex flex-col gap-[24px] sm:flex-row sm:items-center'>
+            {/* Avatar */}
+            <div className='relative flex h-[80px] w-[80px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-theme-primary/10 text-[28px] font-black text-theme-primary ring-4 ring-theme-primary/10 dark:bg-theme-primary/20'>
+              {user.value.image ? (
+                <img
+                  src={user.value.image}
+                  alt={user.value.username}
+                  className='h-full w-full object-cover'
+                />
+              ) : (
+                user.value.username.slice(0, 2).toUpperCase()
+              )}
+            </div>
+
+            {/* Info */}
+            <div className='flex-1'>
+              <div className='flex flex-wrap items-center gap-[8px]'>
+                <h3 className='text-[20px] font-black text-theme-secondary dark:text-white'>
+                  {user.value.username}
+                </h3>
+                <span className='rounded-full bg-theme-primary/10 px-[10px] py-[2px] text-[11px] font-black tracking-wide text-theme-primary uppercase dark:bg-theme-primary/20'>
+                  Administrator
+                </span>
+              </div>
+              <p className='mt-[2px] text-[14px] text-slate-500 dark:text-slate-400'>
+                {user.value.email}
+              </p>
+              {user.value.bio && (
+                <p className='mt-[8px] text-[14px] italic text-slate-600 dark:text-slate-300 max-w-[500px]'>
+                  "{user.value.bio}"
+                </p>
+              )}
+            </div>
+
+            {/* Logout Button */}
+            <button
+              type='button'
+              onClick={() => dispatch({ _tag: 'Logout' })}
+              className='hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/20 border border-slate-200 hover:border-red-200 dark:border-white/10 dark:hover:border-red-900/30 flex items-center justify-center gap-[8px] rounded-[12px] px-[20px] py-[10px] text-[14px] font-bold text-slate-600 dark:text-slate-300 transition-all self-start sm:self-center bg-transparent cursor-pointer'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-[16px] w-[16px]'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'
+                />
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* Appearance Section */}
       <section>
