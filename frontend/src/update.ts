@@ -23,9 +23,9 @@ import {
   saveColorScheme,
   saveTheme,
 } from './theme/util'
-import { type Model, type Msg, type PageModel, type User } from './type'
+import { type Model, type Msg, type PageModel, type User, type Shared } from './type'
 
-export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
+export const initPageModel = (route: AppRoute, shared: Shared): [PageModel, Cmd<Msg>] => {
   switch (route.page._tag) {
     case 'HomePage': {
       const [m, c] = Home.init()
@@ -42,7 +42,7 @@ export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
       ]
     }
     case 'ArticlesPage': {
-      const [m, c] = Articles.init()
+      const [m, c] = Articles.init(shared)
       return [
         { _tag: 'ArticlesPageModel', model: m },
         c.map((subMsg): Msg => ({ _tag: 'ArticlesPageMsg', subMsg })),
@@ -212,7 +212,7 @@ export const navigate =
       return navigate({ page: { _tag: 'HomePage' } }, true)(model)
     }
 
-    const [pageModel, pageCmd] = initPageModel(newRoute)
+    const [pageModel, pageCmd] = initPageModel(newRoute, model.shared)
 
     const nextModel: Model = {
       ...model,
@@ -365,7 +365,7 @@ export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
     }
     case 'ArticlesPageMsg': {
       if (model.pageModel._tag === 'ArticlesPageModel') {
-        const [m, c] = Articles.update(msg.subMsg, model.pageModel.model)
+        const [m, c] = Articles.update(model.shared)(msg.subMsg, model.pageModel.model)
         return [
           { ...model, pageModel: { ...model.pageModel, model: m } },
           c.map((subMsg): Msg => ({ _tag: 'ArticlesPageMsg', subMsg })),

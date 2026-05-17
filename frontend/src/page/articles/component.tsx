@@ -1,11 +1,14 @@
 import * as O from 'fp-ts/lib/Option'
 import React from 'react'
 
+import { ArticleEq } from '@/common/api/type/article'
 import { memoStrategy } from '@/common/util'
 import { SearchBar, type SearchOption } from '@/component/search-bar'
+import { PaginationMemo } from '@/component/pagination/component'
 
 import { ArticleDetailOverlay } from './sub-component/article-detail-overlay'
 import { type Props, PropsEq } from './type'
+import { mkPaginationConfig } from './helper'
 
 const sortOptions: SearchOption[] = [
   { label: 'Creation Date', value: 'createdAt' },
@@ -14,7 +17,9 @@ const sortOptions: SearchOption[] = [
   { label: 'ID', value: 'id' },
 ]
 
-export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
+export const ArticlesComponent: React.FC<Props> = ({ model, shared, dispatch }) => {
+  const paginationConfig = mkPaginationConfig(shared, model)
+
   return (
     <div className='relative flex flex-col gap-[32px]'>
       <div className='flex flex-col gap-[24px]'>
@@ -33,52 +38,12 @@ export const ArticlesComponent: React.FC<Props> = ({ model, dispatch }) => {
         />
       </div>
 
-      <div className='dark:bg-surface-dark overflow-x-auto rounded-[12px] bg-white shadow-sm'>
-        <table className='w-full text-left'>
-          <thead className='bg-slate-50 text-[12px] font-semibold tracking-wider text-slate-500 uppercase dark:bg-black/20 dark:text-slate-200'>
-            <tr>
-              <th className='px-[24px] py-[16px]'>ID</th>
-              <th className='px-[24px] py-[16px]'>Slug</th>
-              <th className='px-[24px] py-[16px]'>Title</th>
-              <th className='px-[24px] py-[16px]'>Author</th>
-              <th className='px-[24px] py-[16px] text-center'>Favorites</th>
-              <th className='px-[24px] py-[16px]'>Created At</th>
-            </tr>
-          </thead>
-          <tbody className='divide-y divide-slate-100 text-[14px] dark:divide-white/20'>
-            {model.articles.map((a) => (
-              <tr
-                key={a.id}
-                className='cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-white/5'
-                onClick={() =>
-                  dispatch({ _tag: 'SelectArticle', article: O.some(a) })
-                }
-              >
-                <td className='px-[24px] py-[16px] font-mono text-slate-400 dark:text-slate-200'>
-                  {a.id}
-                </td>
-                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-500 dark:text-slate-200'>
-                  {a.slug}
-                </td>
-                <td className='text-theme-secondary px-[24px] py-[16px] font-medium dark:text-white'>
-                  {a.title}
-                </td>
-                <td className='px-[24px] py-[16px] text-slate-600 dark:text-slate-200'>
-                  {a.author.username}
-                </td>
-                <td className='px-[24px] py-[16px] text-center'>
-                  <span className='rounded-full bg-slate-50 px-[10px] py-[4px] text-[12px] font-bold text-slate-500 dark:bg-white/10 dark:text-slate-200'>
-                    {a.favoritesCount}
-                  </span>
-                </td>
-                <td className='px-[24px] py-[16px] text-slate-400 dark:text-slate-200'>
-                  {new Date(a.createdAt).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <PaginationMemo
+        model={model.pagination}
+        dispatch={(subMsg) => dispatch({ _tag: 'PaginationMsg', subMsg })}
+        config={paginationConfig}
+        itemEq={ArticleEq}
+      />
 
       <ArticleDetailOverlay
         selectedArticle={model.selectedArticle}
