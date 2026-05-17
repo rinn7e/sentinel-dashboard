@@ -18,20 +18,12 @@ const preView = (dispatch: Dispatcher<Msg>, model: Model | null) => {
   return model ? <App model={model} dispatch={dispatch} /> : preLoadingView()
 }
 
-// Wrapper for update to handle null model
-const updateWrapper = (msg: Msg, model: Model | null): [Model | null, any] => {
-  if (model === null) {
-    return [null, null]
-  }
-  return preUpdate(msg, model)
-}
-
 export const AppProgram = () => {
   return (
     <ProgramWithNav<Model | null, Msg>
       onUrlChange={(location) => ({ _tag: 'UrlChange', location })}
       init={preInit}
-      update={updateWrapper}
+      update={preUpdate}
       view={preView}
       subscriptions={() => Sub.none()}
       {...devTools<Model | null, Msg>().getProgramProps()}

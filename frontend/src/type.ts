@@ -33,6 +33,7 @@ export type Model = {
   showScrollTop: boolean
   theme: Theme
   colorScheme: ColorScheme
+  isInternal: boolean
 }
 
 export type PageModel =
@@ -47,8 +48,14 @@ export type PageModel =
 
 export type Msg =
   | { _tag: 'UrlChange'; location: Location }
-  | { _tag: 'Navigate'; route: AppRoute }
-  | { _tag: 'InitSession'; user: Option<User>; token: Option<string> }
+  | { _tag: 'ChangeRoute'; route: AppRoute }
+  | {
+      readonly _tag: 'Init'
+      readonly location: Location
+      readonly user: Option<User>
+      readonly isUnavailable: boolean
+      readonly token: Option<string>
+    }
   | { _tag: 'Logout' }
   | { _tag: 'HomePageMsg'; subMsg: Home.Msg }
   | { _tag: 'LoginPageMsg'; subMsg: Login.Msg }

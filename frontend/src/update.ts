@@ -5,7 +5,7 @@ import { Cmd, Task } from 'tea-cup-fp'
 
 import { getCurrentUser } from '@/common/api/handler/user'
 import { getToken, removeToken, saveToken } from '@/common/cache'
-import { type AppRoute } from '@/common/type/route'
+import { type AppRoute, AppRouteEq } from '@/common/type/route'
 import { parseAppRoute, toUrlString } from '@/common/util/route'
 import * as Persona from '@/component/persona-panel/update'
 import * as Articles from '@/page/articles'
@@ -23,7 +23,7 @@ import {
   saveColorScheme,
   saveTheme,
 } from './theme/util'
-import { type Model, type Msg, type PageModel } from './type'
+import { type Model, type Msg, type PageModel, type User } from './type'
 
 export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
   switch (route.page._tag) {
@@ -77,131 +77,234 @@ export const initPageModel = (route: AppRoute): [PageModel, Cmd<Msg>] => {
   }
 }
 
-export const preInit = (location: Location): [Model, Cmd<Msg>] => {
-  const storedToken = getToken()
-  const hasToken = !!storedToken
+export const preInit = (location: Location): [Model | null, Cmd<Msg>] => {
+  return [null, initializeCmd(location)]
+}
 
-  let route = parseAppRoute(window.location.origin, location.href)
-  if (!hasToken && route.page._tag !== 'LoginPage') {
-    route = { page: { _tag: 'LoginPage' } }
+export const preUpdate = (
+  msg: Msg,
+  model: Model | null,
+): [Model | null, Cmd<Msg>] => {
+  if (model === null) {
+    if (msg._tag === 'Init') {
+      return init(msg.location, msg.user, msg.isUnavailable, msg.token)
+    }
+    return [null, Cmd.none()]
   }
 
-  const [pageModel, pageCmd] = initPageModel(route)
+  return update(msg, model)
+}
+
+export const init = (
+  location: Location,
+  user: O.Option<User>,
+  isUnavailable: boolean,
+  token: O.Option<string>,
+): [Model, Cmd<Msg>] => {
+  const route = parseAppRoute(window.location.origin, location.href)
+  if (!isUnavailable && token._tag === 'None') {
+    removeToken()
+  }
+
   const [personaModel, personaCmd] = Persona.init()
   const colorScheme = loadColorScheme()
   const savedThemeId = loadThemeId()
   const theme = (savedThemeId ? themes[savedThemeId] : null) ?? defaultTheme
+
   const model: Model = {
     route,
     shared: {
-      user: O.none,
-      token: storedToken ? O.some(storedToken) : O.none,
+      user,
+      token,
     },
-    pageModel,
+    pageModel: { _tag: 'NotFoundPageModel' },
     persona: personaModel,
     showScrollTop: false,
     theme,
     colorScheme,
+    isInternal: false,
   }
 
-  const validationCmd = storedToken
-    ? Task.attempt(taskFromTE(getCurrentUser(storedToken)), (res): Msg => {
-        if (res.tag === 'Ok') {
-          return {
-            _tag: 'InitSession',
-            user: O.some({
+  const [nextModel, navCmd] = navigate(route, false)(model)
+
+  return [
+    nextModel,
+    Cmd.batch([
+      navCmd,
+      personaCmd.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg })),
+    ]),
+  ]
+}
+
+export const initializeCmd = (location: Location): Cmd<Msg> => {
+  const colorScheme = loadColorScheme()
+  const savedThemeId = loadThemeId()
+  const theme = (savedThemeId ? themes[savedThemeId] : null) ?? defaultTheme
+
+  // Inject theme right on initialization to avoid flash of unstyled content
+  injectTheme(theme, colorScheme)
+
+  const storedToken = getToken()
+  if (storedToken) {
+    return Task.attempt(taskFromTE(getCurrentUser(storedToken)), (res): Msg => {
+      const isUnavailable =
+        res.tag === 'Err' &&
+        (res.err.statusCode === 500 ||
+          res.err.statusCode === 0 ||
+          res.err.statusCode === 200)
+
+      const token =
+        res.tag === 'Ok'
+          ? O.some(res.value.user.token)
+          : isUnavailable
+            ? O.some(storedToken)
+            : O.none
+
+      if (token._tag === 'Some') saveToken(token.value)
+      else removeToken()
+
+      return {
+        _tag: 'Init',
+        location,
+        user: res.tag === 'Ok'
+          ? O.some({
               email: res.value.user.email,
               token: res.value.user.token,
               username: res.value.user.username,
               bio: res.value.user.bio,
               image: res.value.user.image,
-            }),
-            token: O.some(res.value.user.token),
-          }
-        } else {
-          removeToken()
-          return {
-            _tag: 'InitSession',
-            user: O.none,
-            token: O.none,
-          }
-        }
-      })
-    : Cmd.none<Msg>()
+            })
+          : O.none,
+        isUnavailable,
+        token,
+      }
+    })
+  }
 
-  return [
-    model,
-    Cmd.batch([
-      pageCmd,
-      validationCmd,
-      personaCmd.map((subMsg): Msg => ({ _tag: 'PersonaMsg', subMsg })),
-      // Initial theme injection using persisted color scheme
-      Task.perform(
-        Task.succeed(undefined).andThen(() => {
-          injectTheme(theme, colorScheme)
-          return Task.succeed(undefined)
-        }),
-        () => ({ _tag: 'NoOp' }) as Msg,
-      ),
-    ]),
-  ]
+  return Task.perform(Task.succeed(undefined), (): Msg => ({
+    _tag: 'Init',
+    location,
+    user: O.none,
+    isUnavailable: false,
+    token: O.none,
+  }))
 }
 
-export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
+export const navigate =
+  (newRoute: AppRoute, isInternal: boolean) =>
+  (model: Model): [Model, Cmd<Msg>] => {
+    const urlCmd = isInternal
+      ? Task.perform(
+          newUrl(toUrlString(newRoute)),
+          (): Msg => ({ _tag: 'NoOp' }),
+        )
+      : Cmd.none<Msg>()
+
+    // Route Guard against unauth
+    const isLoggedIn = O.isSome(model.shared.user)
+    const isRouteRequiredAuth = newRoute.page._tag !== 'LoginPage'
+
+    if (isRouteRequiredAuth && !isLoggedIn && O.isNone(model.shared.token)) {
+      return navigate({ page: { _tag: 'LoginPage' } }, true)(model)
+    }
+
+    if (newRoute.page._tag === 'LoginPage' && isLoggedIn) {
+      return navigate({ page: { _tag: 'HomePage' } }, true)(model)
+    }
+
+    const [pageModel, pageCmd] = initPageModel(newRoute)
+
+    const nextModel: Model = {
+      ...model,
+      isInternal,
+      route: newRoute,
+      pageModel,
+    }
+
+    return [
+      nextModel,
+      Cmd.batch([
+        urlCmd,
+        pageCmd,
+      ]),
+    ]
+  }
+
+const execChangeRoute =
+  (newRoute: AppRoute, isInternal: boolean) =>
+  (model: Model): [Model, Cmd<Msg>] => {
+    if (!AppRouteEq.equals(model.route, newRoute)) {
+      return navigate(newRoute, isInternal)(model)
+    } else {
+      if (isInternal) {
+        return navigate(newRoute, isInternal)(model)
+      } else {
+        return [model, Cmd.none()]
+      }
+    }
+  }
+
+export const changeRouteHandler =
+  (newRoute: AppRoute, isInternal: boolean) =>
+  (model: Model): [Model, Cmd<Msg>] => {
+    return execChangeRoute(newRoute, isInternal)(model)
+  }
+
+// Modify the URL in the address bar without updating the route in the Model.
+// Sets `isInternal` to true to prevent re-navigation when the URL change is detected.
+// useful when we want to update the url to match app state
+export const changeRouteUrlNoReload =
+  (route: AppRoute) =>
+  (model: Model): [Model, Cmd<Msg>] => {
+    const url = toUrlString(route)
+    return [
+      {
+        ...model,
+        isInternal: true,
+      },
+      Task.perform(newUrl(url), (): Msg => ({ _tag: 'NoOp' })),
+    ]
+  }
+
+// Modify the URL in the address bar and also update the route in the Model.
+// Sets `isInternal` to true to prevent re-navigation when the URL change is detected.
+// useful when we want to update the route,and url to match app state
+export const changeRouteNoReload =
+  (route: AppRoute) =>
+  (model: Model): [Model, Cmd<Msg>] => {
+    const url = toUrlString(route)
+    return [
+      {
+        ...model,
+        route,
+        isInternal: true,
+      },
+      Task.perform(newUrl(url), (): Msg => ({ _tag: 'NoOp' })),
+    ]
+  }
+
+export const update = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
   switch (msg._tag) {
     case 'UrlChange': {
-      const route = parseAppRoute(window.location.origin, msg.location.href)
-      const isLoggedIn = O.isSome(model.shared.user)
-
-      if (route.page._tag !== 'LoginPage' && !isLoggedIn && O.isNone(model.shared.token)) {
-        const [pageModel, pageCmd] = initPageModel({ page: { _tag: 'LoginPage' } })
+      if (model.isInternal) {
         return [
-          { ...model, route: { page: { _tag: 'LoginPage' } }, pageModel, showScrollTop: false },
-          pageCmd,
+          {
+            ...model,
+            isInternal: false,
+          },
+          Cmd.none(),
         ]
+      } else {
+        const route = parseAppRoute(window.location.origin, msg.location.href)
+        return changeRouteHandler(route, false)(model)
       }
-
-      if (route.page._tag === 'LoginPage' && isLoggedIn) {
-        const [pageModel, pageCmd] = initPageModel({ page: { _tag: 'HomePage' } })
-        return [
-          { ...model, route: { page: { _tag: 'HomePage' } }, pageModel, showScrollTop: false },
-          pageCmd,
-        ]
-      }
-
-      const [pageModel, pageCmd] = initPageModel(route)
-      return [{ ...model, route, pageModel, showScrollTop: false }, pageCmd]
     }
-    case 'Navigate': {
-      const url = toUrlString(msg.route)
-      return [model, Task.perform(newUrl(url), (): Msg => ({ _tag: 'NoOp' }))]
+    case 'ChangeRoute': {
+      return changeRouteHandler(msg.route, true)(model)
     }
-    case 'InitSession': {
-      const nextModel = {
-        ...model,
-        shared: {
-          user: msg.user,
-          token: msg.token,
-        },
-      }
-
-      const isLoggedIn = O.isSome(msg.user)
-      if (isLoggedIn && model.route.page._tag === 'LoginPage') {
-        return [
-          nextModel,
-          Task.perform(newUrl(toUrlString({ page: { _tag: 'HomePage' } })), (): Msg => ({ _tag: 'NoOp' })),
-        ]
-      }
-
-      if (!isLoggedIn && model.route.page._tag !== 'LoginPage') {
-        return [
-          nextModel,
-          Task.perform(newUrl(toUrlString({ page: { _tag: 'LoginPage' } })), (): Msg => ({ _tag: 'NoOp' })),
-        ]
-      }
-
-      return [nextModel, Cmd.none()]
-    }
+    case 'Init':
+      // Handled by preUpdate
+      return [model, Cmd.none()]
     case 'Logout': {
       removeToken()
       const nextModel = {
@@ -211,10 +314,7 @@ export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
           token: O.none,
         },
       }
-      return [
-        nextModel,
-        Task.perform(newUrl(toUrlString({ page: { _tag: 'LoginPage' } })), (): Msg => ({ _tag: 'NoOp' })),
-      ]
+      return changeRouteHandler({ page: { _tag: 'LoginPage' } }, true)(nextModel)
     }
     case 'HomePageMsg': {
       if (model.pageModel._tag === 'HomePageModel') {
@@ -249,14 +349,12 @@ export const preUpdate = (msg: Msg, model: Model): [Model, Cmd<Msg>] => {
               token: O.some(user.token),
             },
           }
+          const [finalModel, navCmd] = changeRouteHandler({ page: { _tag: 'HomePage' } }, true)(updatedModel)
           return [
-            updatedModel,
+            finalModel,
             Cmd.batch([
               nextCmd,
-              Task.perform(
-                newUrl(toUrlString({ page: { _tag: 'HomePage' } })),
-                (): Msg => ({ _tag: 'NoOp' }),
-              ),
+              navCmd,
             ]),
           ]
         }
