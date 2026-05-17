@@ -5,7 +5,7 @@ import { Cmd } from 'tea-cup-fp'
 
 import { updateAndCmd } from '@rinn7e/tea-cup-prelude'
 import type { Shared } from '@/type'
-import * as Pagination from '@/component/pagination'
+import * as Pagination from '@rinn7e/tea-cup-pagination'
 
 import { mkPaginationConfig } from './helper'
 import { type Model, type Msg } from './type'

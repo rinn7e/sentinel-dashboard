@@ -1,10 +1,10 @@
-import * as O from 'fp-ts/lib/Option'
 import React from 'react'
 
 import { ArticleEq } from '@/common/api/type/article'
+import { ApiErrorEq, getHttpErrorEq } from '@/common/api/type'
 import { memoStrategy } from '@/common/util'
 import { SearchBar, type SearchOption } from '@/component/search-bar'
-import { PaginationMemo } from '@/component/pagination/component'
+import { PaginationMemo } from '@rinn7e/tea-cup-pagination/lib/component'
 
 import { ArticleDetailOverlay } from './sub-component/article-detail-overlay'
 import { type Props, PropsEq } from './type'
@@ -38,12 +38,15 @@ export const ArticlesComponent: React.FC<Props> = ({ model, shared, dispatch }) 
         />
       </div>
 
-      <PaginationMemo
-        model={model.pagination}
-        dispatch={(subMsg) => dispatch({ _tag: 'PaginationMsg', subMsg })}
-        config={paginationConfig}
-        itemEq={ArticleEq}
-      />
+      <div className='flex flex-col gap-[20px]'>
+        <PaginationMemo
+          model={model.pagination}
+          dispatch={(subMsg) => dispatch({ _tag: 'PaginationMsg', subMsg })}
+          config={paginationConfig}
+          itemEq={ArticleEq}
+          errEq={getHttpErrorEq(ApiErrorEq)}
+        />
+      </div>
 
       <ArticleDetailOverlay
         selectedArticle={model.selectedArticle}

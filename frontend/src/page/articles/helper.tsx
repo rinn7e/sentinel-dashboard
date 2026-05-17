@@ -7,15 +7,18 @@ import React from 'react'
 import { getAdminArticles } from '@/common/api/handler/article'
 import type { Article } from '@/common/api/type/article'
 import type { Shared } from '@/type'
-import * as Pagination from '@/component/pagination'
+import { type ApiError, type HttpError } from '@/common/api/type'
+import type * as Pagination from '@rinn7e/tea-cup-pagination'
+import { renderPagination } from '@/component/pagination'
 
 import { GET_ARTICLES_LIMIT, type Model } from './type'
 
 export const mkPaginationConfig = (
   shared: Shared,
   model: Model,
-): Pagination.Config<Article, any> => ({
+): Pagination.Config<Article, any, HttpError<ApiError>> => ({
   limit: GET_ARTICLES_LIMIT,
+  scrollContainerId: 'main-content',
   handler: (offset, limit) => {
     const searchParams = model.searchText.trim()
       ? { limit, offset, search: model.searchText.trim() }
@@ -133,4 +136,5 @@ export const mkPaginationConfig = (
       ),
     )
   },
+  renderPagination,
 })
