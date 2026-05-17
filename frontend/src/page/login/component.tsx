@@ -22,7 +22,10 @@ export const LoginComponent: React.FC<Props> = () => {
             placeholder='Password'
             className='focus:ring-theme-primary w-full rounded-[8px] border border-slate-200 p-[12px] focus:ring-2 focus:outline-none dark:border-white/20 dark:bg-black/20 dark:text-white'
           />
-          <button className='bg-theme-primary hover:bg-theme-primary/90 w-full rounded-[8px] py-[12px] font-bold text-white transition-colors'>
+          <button
+            type='button'
+            className='bg-theme-primary hover:bg-theme-primary/90 w-full rounded-[8px] py-[12px] font-bold text-white transition-colors'
+          >
             Sign In
           </button>
         </div>

@@ -237,6 +237,7 @@ export const App: React.FC<Props> = ({ model, dispatch }) => {
         {/* Scroll to Top Button */}
         {model.showScrollTop && model.route.page._tag !== 'HomePage' && (
           <button
+            type='button'
             onClick={() => dispatch({ _tag: 'ScrollToTop' })}
             className='bg-theme-primary fixed right-[32px] bottom-[32px] z-[50] flex h-[48px] w-[48px] items-center justify-center rounded-full text-white shadow-2xl transition-all hover:scale-110 active:scale-95'
           >
@@ -276,6 +277,7 @@ const SidebarLink: React.FC<{
   onClick: () => void
 }> = ({ label, icon, active, onClick }) => (
   <button
+    type='button'
     onClick={onClick}
     className={`flex w-full items-center gap-[12px] rounded-[8px] px-[16px] py-[12px] text-left transition-all duration-200 ${
       active

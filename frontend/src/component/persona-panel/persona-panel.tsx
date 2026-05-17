@@ -53,7 +53,7 @@ export const PersonaPanel: React.FC<Props> = ({
   theme,
   colorScheme,
   dispatch,
-  onSwitchTheme,
+  onSwitchTheme: _onSwitchTheme,
 }) => {
   const clearCacheAndReload = () => {
     localStorage.clear()

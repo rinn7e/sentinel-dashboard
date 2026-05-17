@@ -137,6 +137,7 @@ export const SettingsComponent: React.FC<{
             const isActive = colorScheme === opt.value
             return (
               <button
+                type='button'
                 key={opt.value}
                 id={`color-scheme-${opt.value}`}
                 onClick={() =>
@@ -210,6 +211,7 @@ export const SettingsComponent: React.FC<{
             const isActive = theme.id === t.id
             return (
               <button
+                type='button'
                 key={t.id}
                 id={`theme-${t.id}`}
                 onClick={() => dispatch({ _tag: 'SwitchTheme', theme: t })}

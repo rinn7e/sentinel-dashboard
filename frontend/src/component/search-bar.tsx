@@ -52,6 +52,7 @@ export const SearchBar: React.FC<Props> = ({
         />
         {searchText && (
           <button
+            type='button'
             onClick={() => onSearchChange('')}
             className='rounded-full bg-slate-100 p-[4px] text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600 dark:bg-black/20 dark:text-slate-200 dark:hover:bg-black/40 dark:hover:text-white'
           >
@@ -87,6 +88,7 @@ export const SearchBar: React.FC<Props> = ({
           ))}
         </select>
         <button
+          type='button'
           onClick={() =>
             onSortChange({
               ...sort,

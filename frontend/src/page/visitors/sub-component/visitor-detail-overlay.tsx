@@ -28,6 +28,7 @@ export const VisitorDetailOverlay: React.FC<{
               Visitor Details
             </h3>
             <button
+              type='button'
               onClick={() =>
                 dispatch({ _tag: 'SelectVisitor', visitor: O.none })
               }

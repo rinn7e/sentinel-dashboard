@@ -11,6 +11,7 @@ export const DialogueSection: React.FC<{
       <div className='space-y-[12px]'>
         <p>"{bio}"</p>
         <button
+          type='button'
           onClick={onToggleDetails}
           className='text-theme-primary hover:text-theme-primary/70 text-[10px] font-bold uppercase'
         >

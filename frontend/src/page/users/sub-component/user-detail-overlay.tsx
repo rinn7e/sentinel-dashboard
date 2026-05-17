@@ -28,6 +28,7 @@ export const UserDetailOverlay: React.FC<{
               User Profile
             </h3>
             <button
+              type='button'
               onClick={() => dispatch({ _tag: 'SelectUser', user: O.none })}
               className='rounded-full p-[8px] text-slate-400 hover:bg-slate-50 hover:text-slate-600 dark:text-slate-200 dark:hover:bg-white/5 dark:hover:text-white'
             >

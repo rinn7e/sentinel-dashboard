@@ -54,6 +54,7 @@ export const ActionSection: React.FC<{
     <div className='space-y-[12px]'>
       <div className='space-y-[8px]'>
         <button
+          type='button'
           onClick={onClearCache}
           onMouseEnter={() => onHoverAction('clearCache')}
           onMouseLeave={() => onHoverAction(null)}
@@ -81,6 +82,7 @@ export const ActionSection: React.FC<{
         </button>
 
         <button
+          type='button'
           onClick={takeScreenshot}
           onMouseEnter={() => onHoverAction('screenshot')}
           onMouseLeave={() => onHoverAction(null)}
@@ -108,6 +110,7 @@ export const ActionSection: React.FC<{
         </button>
 
         <button
+          type='button'
           onMouseEnter={() => onHoverAction('debug')}
           onMouseLeave={() => onHoverAction(null)}
           className='group border-theme-primary/20 bg-theme-secondary/50 hover:border-theme-primary/50 hover:bg-theme-primary/10 flex w-full items-center justify-between rounded-[8px] border p-[16px] text-left transition-all'
@@ -134,6 +137,7 @@ export const ActionSection: React.FC<{
         </button>
 
         <button
+          type='button'
           onClick={() => window.history.back()}
           onMouseEnter={() => onHoverAction('back')}
           onMouseLeave={() => onHoverAction(null)}
@@ -170,6 +174,7 @@ export const ActionSection: React.FC<{
         <div className='grid grid-cols-3 gap-[8px]'>
           {personaList.map((p) => (
             <button
+              type='button'
               key={p.id}
               onClick={() => onSwitchPersona(p)}
               className={`flex flex-col items-center justify-center rounded-[8px] border p-[8px] transition-all ${

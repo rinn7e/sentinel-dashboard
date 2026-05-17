@@ -28,6 +28,7 @@ export const CommentDetailOverlay: React.FC<{
               Comment Details
             </h3>
             <button
+              type='button'
               onClick={() =>
                 dispatch({ _tag: 'SelectComment', comment: O.none })
               }

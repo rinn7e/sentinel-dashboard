@@ -28,6 +28,7 @@ export const ArticleDetailOverlay: React.FC<{
               Article Details
             </h3>
             <button
+              type='button'
               onClick={() =>
                 dispatch({ _tag: 'SelectArticle', article: O.none })
               }

@@ -7,6 +7,7 @@ export const PanelHeader: React.FC<{
 }> = ({ name, onToggleDetails, onToggleCollapse }) => (
   <div className='border-theme-primary/20 flex items-center justify-between border-b p-[24px]'>
     <button
+      type='button'
       onClick={onToggleDetails}
       className='text-theme-primary decoration-theme-primary/50 text-[18px] font-black tracking-widest uppercase underline-offset-4 hover:underline'
     >

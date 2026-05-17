@@ -6,6 +6,7 @@ export const FilterButton: React.FC<{
   onClick: () => void
 }> = ({ label, active, onClick }) => (
   <button
+    type='button'
     onClick={onClick}
     className={`rounded-[6px] px-[12px] py-[6px] text-[13px] font-medium transition-all ${
       active
