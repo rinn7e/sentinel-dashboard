@@ -27,14 +27,16 @@ const hashSlugToId = (slug: string): number => {
 export const getAdminArticles = (
   token: string,
   params: {
-    page?: number
+    limit?: number
+    offset?: number
     tag?: string
     author?: string
     search?: string
   } = {},
 ): TE.TaskEither<HttpError<ApiError>, ArticleListResponse> => {
   const query = new URLSearchParams()
-  if (params.page !== undefined) query.set('page', String(params.page))
+  if (params.limit !== undefined) query.set('limit', String(params.limit))
+  if (params.offset !== undefined) query.set('offset', String(params.offset))
   if (params.tag !== undefined) query.set('tag', params.tag)
   if (params.author !== undefined) query.set('author', params.author)
   if (params.search !== undefined) query.set('search', params.search)

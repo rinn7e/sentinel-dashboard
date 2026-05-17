@@ -50,13 +50,15 @@ export const getCurrentUser = (
 export const getAdminUsers = (
   token: string,
   params: {
-    page?: number
+    limit?: number
+    offset?: number
     username?: string
     email?: string
   } = {},
 ): TE.TaskEither<HttpError<ApiError>, AdminUserListResponse> => {
   const query = new URLSearchParams()
-  if (params.page !== undefined) query.set('page', String(params.page))
+  if (params.limit !== undefined) query.set('limit', String(params.limit))
+  if (params.offset !== undefined) query.set('offset', String(params.offset))
   if (params.username !== undefined) query.set('username', params.username)
   if (params.email !== undefined) query.set('email', params.email)
   const qs = query.toString()

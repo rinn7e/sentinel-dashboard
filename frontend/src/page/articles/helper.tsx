@@ -17,10 +17,9 @@ export const mkPaginationConfig = (
 ): Pagination.Config<Article, any> => ({
   limit: GET_ARTICLES_LIMIT,
   handler: (offset, limit) => {
-    const pageNum = Math.floor(offset / limit) + 1
     const searchParams = model.searchText.trim()
-      ? { page: pageNum, search: model.searchText.trim() }
-      : { page: pageNum }
+      ? { limit, offset, search: model.searchText.trim() }
+      : { limit, offset }
 
     return pipe(
       shared.token,

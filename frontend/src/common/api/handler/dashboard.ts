@@ -49,10 +49,14 @@ export const getVisitorStats = (
 
 export const getLogs = (
   token: string,
-  page?: number,
+  params: {
+    limit?: number
+    offset?: number
+  } = {},
 ): TE.TaskEither<HttpError<ApiError>, LogListResponse> => {
   const query = new URLSearchParams()
-  if (page !== undefined) query.set('page', String(page))
+  if (params.limit !== undefined) query.set('limit', String(params.limit))
+  if (params.offset !== undefined) query.set('offset', String(params.offset))
   const qs = query.toString()
 
   return pipe(
@@ -68,13 +72,15 @@ export const getLogs = (
 export const getVisitors = (
   token: string,
   params: {
-    page?: number
+    limit?: number
+    offset?: number
     ip?: string
     path?: string
   } = {},
 ): TE.TaskEither<HttpError<ApiError>, VisitorListResponse> => {
   const query = new URLSearchParams()
-  if (params.page !== undefined) query.set('page', String(params.page))
+  if (params.limit !== undefined) query.set('limit', String(params.limit))
+  if (params.offset !== undefined) query.set('offset', String(params.offset))
   if (params.ip !== undefined) query.set('ip', params.ip)
   if (params.path !== undefined) query.set('path', params.path)
   const qs = query.toString()

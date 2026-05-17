@@ -19,13 +19,15 @@ import {
 export const getAdminComments = (
   token: string,
   params: {
-    page?: number
+    limit?: number
+    offset?: number
     author?: string
     articleSlug?: string
   } = {},
 ): TE.TaskEither<HttpError<ApiError>, CommentListResponse> => {
   const query = new URLSearchParams()
-  if (params.page !== undefined) query.set('page', String(params.page))
+  if (params.limit !== undefined) query.set('limit', String(params.limit))
+  if (params.offset !== undefined) query.set('offset', String(params.offset))
   if (params.author !== undefined) query.set('author', params.author)
   if (params.articleSlug !== undefined)
     query.set('articleSlug', params.articleSlug)
