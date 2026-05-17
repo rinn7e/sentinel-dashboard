@@ -22,32 +22,32 @@
    ```
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 ### Development
 
 To start the development server locally:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ### Production Build
 
 To build the application for production deployment (e.g. to GitHub Pages):
 ```bash
-VITE_BASE_URL=/sentinel-dashboard/ npm run build
+VITE_BASE_URL=/sentinel-dashboard/ pnpm build
 ```
 
 ### Quality Assurance & Validation
 
 | Command | Description |
 | --- | --- |
-| `npm run lint` | Run ESLint check with zero warnings/errors tolerance |
-| `npm run typecheck` | Run strict TypeScript compiler type checking |
-| `npm run check:watch` | Run TypeScript type checking in watch mode |
-| `npm run check-circular` | Run circular dependency analysis with `madge` |
-| `npm run preview` | Preview the compiled production build locally |
+| `pnpm lint` | Run ESLint check with zero warnings/errors tolerance |
+| `pnpm typecheck` | Run strict TypeScript compiler type checking |
+| `pnpm check:watch` | Run TypeScript type checking in watch mode |
+| `pnpm check-circular` | Run circular dependency analysis with `madge` |
+| `pnpm preview` | Preview the compiled production build locally |
 
 ---
 
