@@ -52,27 +52,11 @@ export const VisitorDetailOverlay: React.FC<{
           </div>
           <div className='flex-grow overflow-y-auto p-[24px]'>
             <DetailRow label='Internal ID' value={visitor.id.toString()} mono />
+            <DetailRow label='IP Address' value={visitor.ip} />
+            <DetailRow label='Requested Path' value={visitor.path} mono />
             <DetailRow
-              label='Fingerprint'
-              value={visitor.browserFingerprint}
-              mono
-            />
-            <DetailRow label='IP Address' value={visitor.ipAddress} />
-            <DetailRow
-              label='Status'
-              value={
-                visitor.userId
-                  ? `Linked to User #${visitor.userId}`
-                  : 'Anonymous'
-              }
-            />
-            <DetailRow
-              label='Total Visits'
-              value={visitor.visitCount.toString()}
-            />
-            <DetailRow
-              label='Last Visit At'
-              value={new Date(visitor.lastVisitAt).toLocaleString()}
+              label='Visited At'
+              value={new Date(visitor.timestamp).toLocaleString()}
             />
             <div className='mt-[24px]'>
               <div className='mb-[8px] text-[12px] font-semibold tracking-wider text-slate-400 uppercase dark:text-slate-200'>

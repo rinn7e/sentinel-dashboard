@@ -37,11 +37,10 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
           <thead className='bg-slate-50 text-[12px] font-semibold tracking-wider text-slate-500 uppercase dark:bg-black/20 dark:text-slate-200'>
             <tr>
               <th className='px-[24px] py-[16px]'>ID</th>
-              <th className='px-[24px] py-[16px]'>Fingerprint</th>
               <th className='px-[24px] py-[16px]'>IP Address</th>
-              <th className='px-[24px] py-[16px]'>User ID</th>
-              <th className='px-[24px] py-[16px]'>Visits</th>
-              <th className='px-[24px] py-[16px]'>Last Seen</th>
+              <th className='px-[24px] py-[16px]'>Path</th>
+              <th className='px-[24px] py-[16px]'>User Agent</th>
+              <th className='px-[24px] py-[16px]'>Visited At</th>
             </tr>
           </thead>
           <tbody className='divide-y divide-slate-100 text-[14px] dark:divide-white/20'>
@@ -56,28 +55,17 @@ export const VisitorsComponent: React.FC<Props> = ({ model, dispatch }) => {
                 <td className='px-[24px] py-[16px] font-mono text-slate-400 dark:text-slate-200'>
                   {v.id}
                 </td>
-                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-600 dark:text-slate-200'>
-                  {v.browserFingerprint.substring(0, 12)}...
+                <td className='text-theme-secondary px-[24px] py-[16px] font-medium dark:text-white'>
+                  {v.ip}
                 </td>
-                <td className='text-theme-secondary px-[24px] py-[16px] dark:text-white'>
-                  {v.ipAddress}
+                <td className='px-[24px] py-[16px] font-mono text-[12px] text-slate-500 dark:text-slate-200'>
+                  {v.path}
                 </td>
-                <td className='px-[24px] py-[16px]'>
-                  {v.userId ? (
-                    <span className='bg-theme-primary/10 text-theme-primary rounded-full px-[8px] py-[2px] font-medium'>
-                      User #{v.userId}
-                    </span>
-                  ) : (
-                    <span className='text-slate-400 dark:text-slate-600'>
-                      Anonymous
-                    </span>
-                  )}
-                </td>
-                <td className='px-[24px] py-[16px] font-bold text-slate-700 dark:text-slate-200'>
-                  {v.visitCount}
+                <td className='max-w-[300px] truncate px-[24px] py-[16px] text-slate-600 dark:text-slate-200'>
+                  {v.userAgent}
                 </td>
                 <td className='px-[24px] py-[16px] text-slate-400 dark:text-slate-200'>
-                  {new Date(v.lastVisitAt).toLocaleString()}
+                  {new Date(v.timestamp).toLocaleString()}
                 </td>
               </tr>
             ))}

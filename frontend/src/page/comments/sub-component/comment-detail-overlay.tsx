@@ -57,12 +57,12 @@ export const CommentDetailOverlay: React.FC<{
               </div>
               <div className='flex items-center gap-[12px]'>
                 <img
-                  src={comment.author.image || ''}
+                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${comment.authorUsername}`}
                   className='h-[32px] w-[32px] rounded-full object-cover shadow-sm'
                   alt=''
                 />
                 <div className='text-theme-secondary font-bold dark:text-white'>
-                  {comment.author.username}
+                  {comment.authorUsername}
                 </div>
               </div>
             </div>

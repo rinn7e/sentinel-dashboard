@@ -5,7 +5,7 @@ import * as N from 'fp-ts/lib/number'
 import * as S from 'fp-ts/lib/string'
 import * as t from 'io-ts'
 
-import { type Profile, ProfileEq, ProfileJson } from './profile'
+import { type AdminUser, AdminUserEq, AdminUserJson } from './user'
 
 export type Article = {
   id: number
@@ -18,7 +18,7 @@ export type Article = {
   updatedAt: string
   favorited: boolean
   favoritesCount: number
-  author: Profile
+  author: AdminUser
 }
 
 export const ArticleEq = EqClass.struct<Article>({
@@ -32,7 +32,7 @@ export const ArticleEq = EqClass.struct<Article>({
   updatedAt: S.Eq,
   favorited: B.Eq,
   favoritesCount: N.Eq,
-  author: ProfileEq,
+  author: AdminUserEq,
 })
 
 export const ArticleJson: t.Type<Article> = t.type({
@@ -46,5 +46,15 @@ export const ArticleJson: t.Type<Article> = t.type({
   updatedAt: t.string,
   favorited: t.boolean,
   favoritesCount: t.number,
-  author: ProfileJson,
+  author: AdminUserJson,
+})
+
+export type ArticleListResponse = {
+  articles: Article[]
+  articlesCount: number
+}
+
+export const ArticleListResponseJson = t.type({
+  articles: t.array(ArticleJson),
+  articlesCount: t.number,
 })
